@@ -1,0 +1,116 @@
+<!--Hier werden die bestellten Pizzen angezeigt. Der Pizzabäcker kann den Status für jede Pizza von "bestellt" auf "im Ofen" bzw. "fertig" setzen.
+
+Übernimmt der Fahrer eine Pizza, so verschwindet sie aus der Liste des Bäckers.-->
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <title>Pizzabäcker(bestellte Pizzen)</title>
+</head>
+
+<body>
+<div
+        class="status-row"
+        style="
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        flex-direction: row;
+        gap: 100px;
+        margin-left: 300px;
+      "
+>
+  <p style="text-align: center">bestellt</p>
+  <p style="text-align: center">im Ofen</p>
+  <p style="text-align: center">fertig</p>
+</div>
+
+<div
+        class="grid-container"
+        style="
+        display: grid;
+        grid-template-columns: 200px 1fr 1fr 1fr;
+        gap: 100px;
+        margin-bottom: 20px;
+      "
+>
+  <div class="bestellte-produkt-name">Margherita</div>
+  <input
+          class="radio-checkbox-bestellt"
+          name="status-row-1"
+          style="text-align: center"
+          type="radio"
+  />
+
+  <input
+          class="radio-checkbox-imOfen"
+          name="status-row-1"
+          style="text-align: center"
+          type="radio"
+  />
+  <input
+          class="radio-checkbox-fertig"
+          name="status-row-1"
+          style="text-align: center"
+          type="radio"
+  />
+</div>
+<div
+        class="grid-container"
+        style="
+        display: grid;
+        grid-template-columns: 200px 1fr 1fr 1fr;
+        gap: 100px;
+        margin-bottom: 20px;
+      "
+>
+  <div class="bestellte-produkt-name">Tonno</div>
+  <input
+          class="radio-checkbox-bestellt"
+          name="status-row-2"
+          style="text-align: center"
+          type="radio"
+  />
+  <input
+          class="radio-checkbox-imOfen"
+          name="status-row-2"
+          style="text-align: center"
+          type="radio"
+  />
+  <input
+          class="radio-checkbox-fertig"
+          name="status-row-2"
+          style="text-align: center"
+          type="radio"
+  />
+</div>
+<div
+        class="grid-container"
+        style="
+        display: grid;
+        grid-template-columns: 200px 1fr 1fr 1fr;
+        gap: 100px;
+        margin-bottom: 20px;
+      "
+>
+  <div class="bestellte-produkt-name">Hawaii</div>
+  <input
+          class="radio-checkbox-bestellt"
+          name="status-row-3"
+          style="text-align: center"
+          type="radio"
+  />
+  <input
+          class="radio-checkbox-imOfen"
+          name="status-row-3"
+          style="text-align: center"
+          type="radio"
+  />
+  <input
+          class="radio-checkbox-fertig"
+          name="status-row-3"
+          style="text-align: center"
+          type="radio"
+  />
+</div>
+</body>
+</html>

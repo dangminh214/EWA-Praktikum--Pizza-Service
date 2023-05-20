@@ -1,0 +1,13 @@
+h1 {
+    text-align: center;
+}
+
+.article_detail {
+    height: 400px;
+    width: 320px;
+    justify-content: space-between;
+    flex-direction: row;
+}
+.article_detail:hover {
+    cursor: pointer;
+}
