@@ -135,13 +135,16 @@ class Fahrer extends Page
         }
         else {
             foreach ($data as $liefer) {
-                $orderingID = $liefer["orderingID"];
-                $address = $liefer["address"];
-                $orderingTime = $liefer["orderingTime"];
-                $totalPrice = $liefer["totalPrice"];
-                $pizzaList = $liefer["pizzaList"];
                 $status = $liefer["pizzaStatus"];
-                $this->fillStatusInfo($orderingID, $address, $orderingTime, $totalPrice, $pizzaList, $status);
+                if($status == "2" || $status == "3")
+                {
+                    $orderingID = $liefer["orderingID"];
+                    $address = $liefer["address"];
+                    $orderingTime = $liefer["orderingTime"];
+                    $totalPrice = $liefer["totalPrice"];
+                    $pizzaList = $liefer["pizzaList"];
+                    $this->fillStatusInfo($orderingID, $address, $orderingTime, $totalPrice, $pizzaList, $status);
+                }
             }
 
             echo <<<EOT

@@ -134,12 +134,15 @@ EOT;
                 throw new Exception("Bitte geben Sie in beiden Feldern etwas an!");
             }
             else {
+                session_start();
                 $sql_customer_address = $this->database->real_escape_string($customer_address);
 
                 $currentDateTime = date("Y-m-d H:i:s");
                 $sqlInsertCustomerAddressCommand = "INSERT INTO ordering SET address = '$sql_customer_address', ordering_time = '$currentDateTime'";
                 $this->database->query($sqlInsertCustomerAddressCommand);
                 $new_inserted_ordering_id = $this->database->insert_id;
+
+                $_SESSION['last_ordering_id'] = $new_inserted_ordering_id;
 
                 //insert from warenkorb into ordered_article TABLE
                     $index = 0;

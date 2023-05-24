@@ -91,14 +91,12 @@ HERE;
                 <th>bestellt</th>
                 <th>im Ofen</th>
                 <th>fertig</th>
-                <th>unterwegs</th>
             </tr>
 HERE;
             foreach ($bestellung as $row_bestellung) {
                 $idBestellt="bestellt" . "$row_bestellung[ordered_article_id]";
                 $idOfen="ofen" . "$row_bestellung[ordered_article_id]";
                 $idFertig="fertig" . "$row_bestellung[ordered_article_id]";
-                $idUnterwegs = "unterwegs" . "$row_bestellung[ordered_article_id]";
 
                 $checkstatusarray = array(0 => "", 1 => "", 2 => "", 3=>"");
 
@@ -117,13 +115,17 @@ HERE;
 
                 $article_array = array(1=>"Salami", 2=>"Vegeteria", 3=>"Spinat-Hünchen");
 
+                if($row_bestellung['status'] == "3" || $row_bestellung['status'] == "4")
+                {
+                    continue;
+                }
+
                 echo <<<EOT
         <tr>
             <td>{$article_array[$row_bestellung['article_id']]} : Ordering ID: {$row_bestellung['ordering_id']} </td>
             <td><label> <input type="radio" id="$idBestellt" name="$row_bestellung[ordered_article_id]" value="bestellt" $checkstatusarray[0]></label></td>
             <td><label> <input type="radio" id="$idOfen" name="$row_bestellung[ordered_article_id]" value="im Ofen" $checkstatusarray[1]></label></td>
             <td><label> <input type="radio" id="$idFertig" name="$row_bestellung[ordered_article_id]" value="fertig" $checkstatusarray[2]></label></td>
-            <td><label> <input type="radio" id="$idUnterwegs" name="$row_bestellung[ordered_article_id]" value="unterwegs" $checkstatusarray[3]></label></td>
         </tr>       
     EOT;
             };

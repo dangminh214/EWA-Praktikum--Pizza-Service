@@ -88,31 +88,24 @@ class Kunde extends Page
         $checkstatusarray = array(0 => "", 1 => "", 2 => "", 3 => "", 4 => "");
 
         if ($status == "0") {
-            $checkstatusarray[0] = "checked";
+            $checkstatusarray[0] = "bestellt";
         }
         elseif ($status == "1") {
-            $checkstatusarray[1] = "checked";
+            $checkstatusarray[1] = "im Ofen";
         }
         elseif ($status == "2") {
-            $checkstatusarray[2] = "checked";
+            $checkstatusarray[2] = "fertig";
         }
         elseif ($status == "3") {
-            $checkstatusarray[3] = "checked";
+            $checkstatusarray[3] = "unterwegs";
         }
         else {
-            $checkstatusarray[4] = "checked";
+            $checkstatusarray[4] = "geliefert";
         }
 
         echo <<<EOT
             <div>
-                <h3>$name</h3>
-                <div>
-                    <input type="radio" id="$idBestellt" name="$orderedArticleID" value="Bestellt" $checkstatusarray[0]><label for="$idBestellt">Bestellt</label><br>
-                    <input type="radio" id="$idImOfen" name="$orderedArticleID" value="Im Ofen" $checkstatusarray[1]><label for="$idImOfen">Im Ofen</label><br>
-                    <input type="radio" id="$idFertig" name="$orderedArticleID" value="Fertig" $checkstatusarray[2]><label for="$idFertig">Fertig</label><br>
-                    <input type="radio" id="$idUnterwegs" name="$orderedArticleID" value="Unterwegs" $checkstatusarray[3]><label for="$idUnterwegs">Unterwegs</label><br>
-                    <input type="radio" id="$idGeliefert" name="$orderedArticleID" value="Geliefert" $checkstatusarray[4]><label for="$idGeliefert">Geliefert</label><br>
-                </div>
+                <h3>$name: </h3><p>$checkstatusarray[$status]</p>
             </div>
             <br>
         EOT;
