@@ -62,11 +62,15 @@ class Bestellung extends Page
         <section class="article_detail_flex_container">
 EOT;
         foreach ($article_List as $article){
+            $articleName = htmlspecialchars($article['name']);
+            $articlePicture = htmlspecialchars($article['picture']);
+            $articlePrice = htmlspecialchars($article['price']);
+
             echo <<< EOT
-        <div class = "$article[name] article_detail"  id = "" onclick = "clickFunction(event)">
-            <img class="$article[name]" src=$article[picture] width="320px" height="250px" alt="" title="$article[name]"/>
-            <p class = "$article[name] name" id="$article[name].name">$article[name]</p>
-            <p class = "$article[name] price" id="$article[name].price">$article[price] &euro;</p>
+        <div class = "$articleName article_detail"  id = "" onclick = "clickFunction(event)">
+            <img class="$articleName" src=$articlePicture width="320px" height="250px" alt="" title="$articleName"/>
+            <p class = "$articleName name" id="$articleName.name">$articleName</p>
+            <p class = "$articleName price" id="$articleName.price">$articlePrice &euro;</p>
         </div>
 EOT;
         };
@@ -82,9 +86,12 @@ EOT;
         <select id = "warenkorb" name="warenkorb[]" multiple="multiple" size="5">
 EOT;
         foreach ($article_List as $article) {
-            $total_price = $total_price + $article['price'];
+            $articleID = htmlspecialchars($article['article_id']);
+            $articleName = htmlspecialchars($article['name']);
+            $articlePrice = htmlspecialchars($article['price']);
+            $total_price = $total_price + $articlePrice;
             echo <<< EOT
-            <option id = "$article[article_id]" value="$article[article_id]">$article[name]</option>
+            <option id = "$articleID" value="$articleID">$articleName/option>
         EOT;
         };
         echo <<< EOT

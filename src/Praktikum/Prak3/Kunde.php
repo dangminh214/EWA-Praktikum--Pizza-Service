@@ -128,9 +128,9 @@ class Kunde extends Page
         else {
             foreach ($data as $bestellung)
             {
-                $orderedArticleID = $bestellung["orderedArticleID"];
-                $name = $bestellung["name"];
-                $status = $bestellung["status"];
+                $orderedArticleID = htmlspecialchars($bestellung["orderedArticleID"]);
+                $name = htmlspecialchars($bestellung["name"]);
+                $status = htmlspecialchars($bestellung["status"]);
                 $this->fillStatusInfo($orderedArticleID, $name, $status);
             }
 

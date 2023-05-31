@@ -116,19 +116,24 @@ class Baecker extends Page
             </tr>
 HERE;
         foreach ($bestellung as $row_bestellung) {
-            $idBestellt="bestellt" . "$row_bestellung[ordered_article_id]";
-            $idOfen="ofen" . "$row_bestellung[ordered_article_id]";
-            $idFertig="fertig" . "$row_bestellung[ordered_article_id]";
+            $articelID = htmlspecialchars($row_bestellung['article_id']);
+            $orderedArticleID = htmlspecialchars($row_bestellung['ordered_article_id']);
+            $status = htmlspecialchars($row_bestellung['status']);
+            $orderingID = htmlspecialchars($row_bestellung['ordering_id']);
+
+            $idBestellt="bestellt" . "$orderedArticleID";
+            $idOfen="ofen" . "$orderedArticleID";
+            $idFertig="fertig" . "$orderedArticleID";
 
             $checkstatusarray = array(0 => "", 1 => "", 2 => "", 3=>"");
 
-            if($row_bestellung['status'] == "0"){
+            if($status == "0"){
                 $checkstatusarray[0] = "checked";
             }
-            elseif ($row_bestellung['status'] == "1"){
+            elseif ($status == "1"){
                 $checkstatusarray[1] = "checked";
             }
-            elseif ($row_bestellung['status'] == "2") {
+            elseif ($status == "2") {
                 $checkstatusarray[2] = "checked";
             }
             else{
@@ -137,17 +142,17 @@ HERE;
 
             $article_array = array(1=>"Salami", 2=>"Vegeteria", 3=>"Spinat-Hünchen");
 
-            if($row_bestellung['status'] == "3" || $row_bestellung['status'] == "4")
+            if($status == "3" || $status == "4")
             {
                 continue;
             }
 
             echo <<<EOT
         <tr>
-            <td>{$article_array[$row_bestellung['article_id']]} : Ordering ID: {$row_bestellung['ordering_id']} </td>
-            <td><label> <input type="radio" id="$idBestellt" name="$row_bestellung[ordered_article_id]" value="bestellt" $checkstatusarray[0]></label></td>
-            <td><label> <input type="radio" id="$idOfen" name="$row_bestellung[ordered_article_id]" value="im Ofen" $checkstatusarray[1]></label></td>
-            <td><label> <input type="radio" id="$idFertig" name="$row_bestellung[ordered_article_id]" value="fertig" $checkstatusarray[2]></label></td>
+            <td>{$article_array[$articelID]} : Ordering ID: {$orderingID} </td>
+            <td><label> <input type="radio" id="$idBestellt" name="$orderedArticleID" value="bestellt" $checkstatusarray[0]></label></td>
+            <td><label> <input type="radio" id="$idOfen" name="$orderedArticleID" value="im Ofen" $checkstatusarray[1]></label></td>
+            <td><label> <input type="radio" id="$idFertig" name="$orderedArticleID" value="fertig" $checkstatusarray[2]></label></td>
         </tr>       
     EOT;
         };

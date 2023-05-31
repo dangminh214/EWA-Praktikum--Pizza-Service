@@ -48,7 +48,8 @@ class Fahrer extends Page
 
             $orderingID = $record["ordering_id"];
 
-            $pizzaAbfrage = "SELECT ordering_id, name, status, price FROM ordered_article NATURAL JOIN article WHERE ordering_id = $orderingID ORDER BY ordering_id";
+            $oID = $this->database->real_escape_string($orderingID);
+            $pizzaAbfrage = "SELECT ordering_id, name, status, price FROM ordered_article NATURAL JOIN article WHERE ordering_id = \"$oID\" ORDER BY ordering_id";
             $pizzaRecordSet = $this->database->query($pizzaAbfrage);
             $pizzaRecord = $pizzaRecordSet->fetch_assoc();
 
@@ -146,11 +147,11 @@ class Fahrer extends Page
             $status = $liefer["pizzaStatus"];
             if($status == "2" || $status == "3")
             {
-                $orderingID = $liefer["orderingID"];
-                $address = $liefer["address"];
-                $orderingTime = $liefer["orderingTime"];
-                $totalPrice = $liefer["totalPrice"];
-                $pizzaList = $liefer["pizzaList"];
+                $orderingID = htmlspecialchars($liefer["orderingID"]);
+                $address = htmlspecialchars($liefer["address"]);
+                $orderingTime = htmlspecialchars($liefer["orderingTime"]);
+                $totalPrice = htmlspecialchars($liefer["totalPrice"]);
+                $pizzaList = htmlspecialchars($liefer["pizzaList"]);
                 $this->fillStatusInfo($orderingID, $address, $orderingTime, $totalPrice, $pizzaList, $status);
             }
         }
