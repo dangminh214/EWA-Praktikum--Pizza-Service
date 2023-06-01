@@ -48,8 +48,10 @@ ul {
     padding-top: 20px;
     text-align: center;
     font-size: 30px;
+    color: white;
 }
 a {
+    color: white;
     text-decoration: none;
     font-family: 'Bebas Neue', sans-serif;
 }
@@ -58,7 +60,7 @@ a:hover {
     cursor: pointer;
 }
 a:visited {
-    color: inherit;
+    color: white;
     text-decoration: none;
 }
 

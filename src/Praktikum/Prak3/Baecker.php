@@ -31,37 +31,14 @@ require_once './Page.php';
  */
 class Baecker extends Page
 {
-    // to do: declare reference variables for members
-    // representing substructures/blocks
-
-    /**
-     * Instantiates members (to be defined above).
-     * Calls the constructor of the parent i.e. page class.
-     * So, the database connection is established.
-     * @throws Exception
-     */
     protected function __construct()
     {
         parent::__construct();
-        // to do: instantiate members representing substructures/blocks
     }
-
-    /**
-     * Cleans up whatever is needed.
-     * Calls the destructor of the parent i.e. page class.
-     * So, the database connection is closed.
-     */
     public function __destruct()
     {
         parent::__destruct();
     }
-
-    /**
-     * Fetch all data that is necessary for later output.
-     * Data is returned in an array e.g. as associative array.
-     * @return array An array containing the requested data.
-     * This may be a normal array, an empty array or an associative array.
-     */
     protected function getViewData():array
     {
         $sqlRequestCommand = "SELECT* FROM ordered_article";
@@ -83,7 +60,7 @@ class Baecker extends Page
                 "ordered_article_id" => $my_ordered_article_id,
                 "ordering_id" => $my_ordering_id,
                 "article_id" => $my_article_id,
-                "status" =>$my_status
+                "status" => $my_status
             );
         }
 
@@ -91,22 +68,23 @@ class Baecker extends Page
 
         return $bestellung;
     }
-    /**
-     * First the required data is fetched and then the HTML is
-     * assembled for output. i.e. the header is generated, the content
-     * of the page ("view") is inserted and -if available- the content of
-     * all views contained is generated.
-     * Finally, the footer is added.
-     * @return void
-     */
     protected function generateView():void
     {
+        $sec = "10";
+        $page = $_SERVER['PHP_SELF'];
+        header("Refresh: $sec; url = $page");
+        $this->generatePageHeader('Bäcker');
         $bestellung = $this->getViewData();
-        $this->generatePageHeader('Bäcker'); //to do: set optional parameters
-        // to do: output view of this page
         echo <<<HERE
         <h1>Bestellte Pizzen</h1>
-        <form action="https://echo.fbi.h-da.de/" id="BackerInfos" method="post" accept-charset="UTF-8" target="_blank">
+HERE;
+
+        if (!$bestellung) {
+            echo "Keine Bestellungen!";
+        }
+        else {
+            echo <<<HERE
+        <form action="Baecker.php" id="BackerInfos" method="post" accept-charset="UTF-8">
         <table>
             <tr>
                 <th></th>
@@ -115,77 +93,96 @@ class Baecker extends Page
                 <th>fertig</th>
             </tr>
 HERE;
-        foreach ($bestellung as $row_bestellung) {
-            $articelID = htmlspecialchars($row_bestellung['article_id']);
-            $orderedArticleID = htmlspecialchars($row_bestellung['ordered_article_id']);
-            $status = htmlspecialchars($row_bestellung['status']);
-            $orderingID = htmlspecialchars($row_bestellung['ordering_id']);
+            foreach ($bestellung as $row_bestellung) {
+                $idBestellt="bestellt" . "$row_bestellung[ordered_article_id]";
+                $idOfen="ofen" . "$row_bestellung[ordered_article_id]";
+                $idFertig="fertig" . "$row_bestellung[ordered_article_id]";
 
-            $idBestellt="bestellt" . "$orderedArticleID";
-            $idOfen="ofen" . "$orderedArticleID";
-            $idFertig="fertig" . "$orderedArticleID";
+                $checkstatusarray = array(0 => "", 1 => "", 2 => "", 3=>"");
 
-            $checkstatusarray = array(0 => "", 1 => "", 2 => "", 3=>"");
+                if($row_bestellung['status'] == "0"){
+                    $checkstatusarray[0] = "checked";
+                }
+                elseif ($row_bestellung['status'] == "1"){
+                    $checkstatusarray[1] = "checked";
+                }
+                elseif ($row_bestellung['status'] == "2") {
+                    $checkstatusarray[2] = "checked";
+                }
+                else{
+                    $checkstatusarray[3] = "checked";
+                }
 
-            if($status == "0"){
-                $checkstatusarray[0] = "checked";
-            }
-            elseif ($status == "1"){
-                $checkstatusarray[1] = "checked";
-            }
-            elseif ($status == "2") {
-                $checkstatusarray[2] = "checked";
-            }
-            else{
-                $checkstatusarray[3] = "checked";
-            }
+                $article_array = array(1=>"Salami", 2=>"Vegeteria", 3=>"Spinat-Hünchen");
 
-            $article_array = array(1=>"Salami", 2=>"Vegeteria", 3=>"Spinat-Hünchen");
+                if($row_bestellung['status'] == "3" || $row_bestellung['status'] == "4")
+                {
+                    continue;
+                }
 
-            if($status == "3" || $status == "4")
-            {
-                continue;
-            }
-
-            echo <<<EOT
+                echo <<<EOT
         <tr>
-            <td>{$article_array[$articelID]} : Ordering ID: {$orderingID} </td>
-            <td><label> <input type="radio" id="$idBestellt" name="$orderedArticleID" value="bestellt" $checkstatusarray[0]></label></td>
-            <td><label> <input type="radio" id="$idOfen" name="$orderedArticleID" value="im Ofen" $checkstatusarray[1]></label></td>
-            <td><label> <input type="radio" id="$idFertig" name="$orderedArticleID" value="fertig" $checkstatusarray[2]></label></td>
+            <td>{$article_array[$row_bestellung['article_id']]} : Ordering ID: {$row_bestellung['ordering_id']} </td>
+            <td><label> <input type="radio" id="$idBestellt" name="$row_bestellung[ordered_article_id]" value="bestellt" $checkstatusarray[0]></label></td>
+            <td><label> <input type="radio" id="$idOfen" name="$row_bestellung[ordered_article_id]" value="im Ofen" $checkstatusarray[1]></label></td>
+            <td><label> <input type="radio" id="$idFertig" name="$row_bestellung[ordered_article_id]" value="fertig" $checkstatusarray[2]></label></td>
         </tr>       
     EOT;
-        };
-        echo <<<EOT
+            };
+            echo <<<EOT
             </table>
             <input type="submit" id="submit" value="Bestätigen">
             </form>
 EOT;
-            $this->generatePageFooter();
+        }
+
+
+        $this->generatePageFooter();
     }
-    /**
-     * Processes the data that comes via GET or POST.
-     * If this page is supposed to do something with submitted
-     * data do it here.
-     * @return void
-     */
+
     protected function processReceivedData():void
     {
         parent::processReceivedData();
-        // to do: call processReceivedData() for all members
+        $array = $this->getViewData();
+        //var_dump($array);
+        if (count($_POST)) {
+            if (isset($_POST)) {
+                foreach ($_POST as $ordered_article_id => $status) {
+                    $sqlRequestData =
+                        "SELECT * FROM ordered_article
+                    WHERE ordered_article_id = $ordered_article_id";
+
+                    $recordSet = $this->database->query($sqlRequestData);
+
+                    if($recordSet->num_rows == 0)
+                    {
+                        $recordSet->free();
+                        throw new Exception("Keine Bestellung vorhanden");
+                    }
+                    else
+                    {
+                        if ($status == "bestellt") {
+                            $status = "0";
+                        }
+                        elseif ($status == "im Ofen") {
+                            $status = "1";
+                        }
+                        else {
+                            $status = "2";
+                        }
+
+                        $sqlUpdateCommand = "UPDATE ordered_article 
+                                            SET status = $status 
+                                            WHERE ordered_article_id = $ordered_article_id";
+                        $this->database->query($sqlUpdateCommand);
+                    }
+
+                }
+            }
+        }
+
     }
 
-    /**
-     * This main-function has the only purpose to create an instance
-     * of the class and to get all the things going.
-     * I.e. the operations of the class are called to produce
-     * the output of the HTML-file.
-     * The name "main" is no keyword for php. It is just used to
-     * indicate that function as the central starting point.
-     * To make it simpler this is a static function. That is you can simply
-     * call it without first creating an instance of the class.
-     * @return void
-     */
     public static function main():void
     {
         try {
@@ -199,13 +196,4 @@ EOT;
     }
 }
 
-// This call is starting the creation of the page.
-// That is input is processed and output is created.
 Baecker::main();
-
-// Zend standard does not like closing php-tag!
-// PHP doesn't require the closing tag (it is assumed when the file ends).
-// Not specifying the closing ? >  helps to prevent accidents
-// like additional whitespace which will cause session
-// initialization to fail ("headers already sent").
-//? >

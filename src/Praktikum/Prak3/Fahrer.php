@@ -140,7 +140,7 @@ class Fahrer extends Page
 
         echo <<< EOT
             <h2>Auslieferbare Bestellungen</h2>
-            <form action="https://echo.fbi.h-da.de/" id="LieferInfos" method="post" accept-charset="UTF-8">       
+            <form action="Fahrer.php" id="LieferInfos" method="post" accept-charset="UTF-8">       
         EOT;
 
         foreach ($data as $liefer) {

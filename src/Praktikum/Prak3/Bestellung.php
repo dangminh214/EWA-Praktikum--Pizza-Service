@@ -91,7 +91,7 @@ EOT;
             $articlePrice = htmlspecialchars($article['price']);
             $total_price = $total_price + $articlePrice;
             echo <<< EOT
-            <option id = "$articleID" value="$articleID">$articleName/option>
+            <option id = "$articleID" value="$articleID"> $articleName </option>
         EOT;
         };
         echo <<< EOT
