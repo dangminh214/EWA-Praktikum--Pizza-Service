@@ -62,9 +62,9 @@ class Bestellung extends Page
         <section class="article_detail_flex_container">
 EOT;
         foreach ($article_List as $article){
-            $articleName = htmlspecialchars($article['name']);
-            $articlePicture = htmlspecialchars($article['picture']);
-            $articlePrice = htmlspecialchars($article['price']);
+            $articleName = htmlspecialchars($article['name'], ENT_QUOTES, 'UTF-8');
+            $articlePicture = htmlspecialchars($article['picture'], ENT_QUOTES, 'UTF-8');
+            $articlePrice = htmlspecialchars($article['price'], ENT_QUOTES, 'UTF-8');
 
             echo <<< EOT
         <div class = "$articleName article_detail"  id = "" onclick = "clickFunction(event)">
@@ -86,9 +86,9 @@ EOT;
         <select id = "warenkorb" name="warenkorb[]" multiple="multiple" size="5">
 EOT;
         foreach ($article_List as $article) {
-            $articleID = htmlspecialchars($article['article_id']);
-            $articleName = htmlspecialchars($article['name']);
-            $articlePrice = htmlspecialchars($article['price']);
+            $articleID = htmlspecialchars($article['article_id'], ENT_QUOTES, 'UTF-8');
+            $articleName = htmlspecialchars($article['name'], ENT_QUOTES, 'UTF-8');
+            $articlePrice = htmlspecialchars($article['price'], ENT_QUOTES, 'UTF-8');
             $total_price = $total_price + $articlePrice;
             echo <<< EOT
             <option id = "$articleID" value="$articleID"> $articleName </option>
@@ -113,7 +113,7 @@ EOT;
         if (isset($_POST["address-input"])&&isset($_POST["warenkorb"])) {
 
             //insert from address-input into ordering TABLE
-            $customer_address = $_POST["address-input"];
+            $customer_address = $this->database->real_escape_string($_POST["address-input"]);
             $ordered_article_list = $_POST["warenkorb"];
 
             if (strlen($customer_address) <= 0) {
@@ -121,31 +121,30 @@ EOT;
             }
             else {
                 session_start();
-                $sql_customer_address = $this->database->real_escape_string($customer_address);
-                $currentDateTime = date("Y-m-d H:i:s");
-                $sqlInsertCustomerAddressCommand = "INSERT INTO ordering SET address = '$sql_customer_address', ordering_time = '$currentDateTime'";
+                $currentDateTime = $this->database->real_escape_string(date("Y-m-d H:i:s"));
+                $sqlInsertCustomerAddressCommand = "INSERT INTO ordering SET address = \"$customer_address\", ordering_time = \"$currentDateTime\";";
                 $this->database->query($sqlInsertCustomerAddressCommand);
                 $new_inserted_ordering_id = $this->database->insert_id;
 
                 $_SESSION['last_ordering_id'] = $new_inserted_ordering_id;
 
                 //insert from warenkorb into ordered_article TABLE
-                    $index = 0;
-                    foreach ($ordered_article_list as $ordered_article) {
-                        $sqlInsertOrderedArticleCommand = "INSERT INTO ordered_article SET ".
-                            "ordering_id = $new_inserted_ordering_id, ".
-                            "article_id = $ordered_article_list[$index],".
-                            "status = 0";
-                        $this->database->query($sqlInsertOrderedArticleCommand);
+                $index = 0;
 
-                        $index = $index+1;
-                    }
+                foreach ($ordered_article_list as $ordered_article) {
+
+                    $sqlInsertOrderedArticleCommand = "INSERT INTO ordered_article SET ".
+                        "ordering_id = $new_inserted_ordering_id, ".
+                        "article_id = $ordered_article_list[$index],".
+                        "status = 0;";
+                    $this->database->query($sqlInsertOrderedArticleCommand);
+
+                    $index = $index+1;
+                }
             }
 
         }
     }
-
-
     public static function main(): void
     {
         try {

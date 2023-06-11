@@ -97,6 +97,7 @@ abstract class Page
 <head>
     <meta charset="UTF-8">
     <link rel = "stylesheet" type="text/css" href="$title.css"> 
+    <script type="text/javascript" src="$title.js"></script>
     <title>$title</title>
 </head>
 <body>

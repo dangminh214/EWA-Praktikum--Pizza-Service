@@ -113,16 +113,21 @@ class Fahrer extends Page
                     <td>$orderingTime</td>
                 </tr>
                 <tr>
-                    <td>$pizzaList:   $totalPrice</td>
+                    <td>$pizzaList: $totalPrice</td>
                 </tr>
                 <tr>
                     <table>
                         <tr>
-                            <td><input type="radio" id="$idFertig" name="$orderingID" value="fertig" $checkstatusarray[0]><label for="$idFertig"></label>Fertig</label><br></td>
-                            <td><input type="radio" id="$idUnterwegs" name="$orderingID" value="unterwegs" $checkstatusarray[1] for="$idUnterwegs"><label>Unterwegs</label><br></td>
-                            <td><input type="radio" id="$idGeliefert" name="$orderingID" value="geliefert" $checkstatusarray[2] for="$idGeliefert"><label>Geliefert</label><br></td>
+                            <td><input form="$orderingID" type="radio" id="$idFertig" name="pizzaStatus" value="2" $checkstatusarray[0]><label for="$idFertig"></label>Fertig</label><br></td>
+                            <td><input form="$orderingID" type="radio" id="$idUnterwegs" name="pizzaStatus" value="3" $checkstatusarray[1]><label for="$idUnterwegs"><label>Unterwegs</label><br></td>
+                            <td><input form="$orderingID" type="radio" id="$idGeliefert" name="pizzaStatus" value="4" $checkstatusarray[2]><label for="$idGeliefert"><label>Geliefert</label><br></td>
                         </tr>
                     </table>
+                </tr>
+                <tr>
+                    <input form="$orderingID" type="submit" id="submit" value="Bestätigen">
+                    <input form="$orderingID" type="hidden" name="orderingID" value=$orderingID>
+                    <form action="Fahrer.php" id="$orderingID" method="post" accept-charset="UTF-8"></form>
                 </tr>
             </table>
             
@@ -139,26 +144,23 @@ class Fahrer extends Page
         $this->generatePageHeader('Fahrer');
 
         echo <<< EOT
-            <h2>Auslieferbare Bestellungen</h2>
-            <form action="Fahrer.php" id="LieferInfos" method="post" accept-charset="UTF-8">       
+            <h2>Auslieferbare Bestellungen</h2>      
         EOT;
 
         foreach ($data as $liefer) {
             $status = $liefer["pizzaStatus"];
             if($status == "2" || $status == "3")
             {
-                $orderingID = htmlspecialchars($liefer["orderingID"]);
-                $address = htmlspecialchars($liefer["address"]);
-                $orderingTime = htmlspecialchars($liefer["orderingTime"]);
-                $totalPrice = htmlspecialchars($liefer["totalPrice"]);
-                $pizzaList = htmlspecialchars($liefer["pizzaList"]);
+                $orderingID = htmlspecialchars($liefer["orderingID"], ENT_QUOTES, 'UTF-8');
+                $address = htmlspecialchars($liefer["address"], ENT_QUOTES, 'UTF-8');
+                $orderingTime = htmlspecialchars($liefer["orderingTime"], ENT_QUOTES, 'UTF-8');
+                $totalPrice = htmlspecialchars($liefer["totalPrice"], ENT_QUOTES, 'UTF-8');
+                $pizzaList = htmlspecialchars($liefer["pizzaList"], ENT_QUOTES, 'UTF-8');
                 $this->fillStatusInfo($orderingID, $address, $orderingTime, $totalPrice, $pizzaList, $status);
             }
         }
 
         echo <<<EOT
-                <input type="submit" id="submit" value="Bestätigen">
-            </form>
         </body>
         EOT;
 
@@ -170,9 +172,26 @@ class Fahrer extends Page
 
         if(count($_POST))
         {
-            if(isset($_POST))
+            if(isset($_POST["pizzaStatus"]) && isset($_POST["orderingID"]))
             {
-                foreach ($_POST as $orderingID => $status)
+                $orderingID = $this->database->real_escape_string($_POST["orderingID"]);
+                $status = $this->database->real_escape_string($_POST["pizzaStatus"]);
+
+                $sqlAbfrage = "SELECT * FROM ordering WHERE ordering_id = \"$orderingID\";";
+                $recordSet = $this->database->query($sqlAbfrage);
+
+                if($recordSet->num_rows == 0)
+                {
+                    $recordSet->free();
+                    throw new Exception("Keine Bestellung vorhanden");
+                }
+
+                else{
+                    $sqlAbfrage = "UPDATE ordered_article SET status = \"$status\" WHERE ordering_id = \"$orderingID\";";
+                    $this->database->query($sqlAbfrage);
+                }
+
+                /*foreach ($_POST as $orderingID => $status)
                 {
                     $sqlAbfrage = "SELECT * FROM ordering WHERE ordering_id = $orderingID";
                     $recordSet = $this->database->query($sqlAbfrage);
@@ -197,7 +216,7 @@ class Fahrer extends Page
                         $sqlAbfrage = "UPDATE ordered_article SET status = $status WHERE ordering_id = $orderingID";
                         $this->database->query($sqlAbfrage);
                     }
-                }
+                }*/
             }
         }
     }
