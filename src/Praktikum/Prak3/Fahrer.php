@@ -190,33 +190,6 @@ class Fahrer extends Page
                     $sqlAbfrage = "UPDATE ordered_article SET status = \"$status\" WHERE ordering_id = \"$orderingID\";";
                     $this->database->query($sqlAbfrage);
                 }
-
-                /*foreach ($_POST as $orderingID => $status)
-                {
-                    $sqlAbfrage = "SELECT * FROM ordering WHERE ordering_id = $orderingID";
-                    $recordSet = $this->database->query($sqlAbfrage);
-
-                    if($recordSet->num_rows == 0)
-                    {
-                        $recordSet->free();
-                        throw new Exception("Keine Bestellung vorhanden");
-                    }
-                    else
-                    {
-                        if ($status == "fertig") {
-                            $status = "2";
-                        }
-                        elseif ($status == "unterwegs") {
-                            $status = "3";
-                        }
-                        else {
-                            $status = "4";
-                        }
-
-                        $sqlAbfrage = "UPDATE ordered_article SET status = $status WHERE ordering_id = $orderingID";
-                        $this->database->query($sqlAbfrage);
-                    }
-                }*/
             }
         }
     }

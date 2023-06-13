@@ -128,9 +128,9 @@ class Kunde extends Page
         else {
             foreach ($data as $bestellung)
             {
-                $orderedArticleID = $bestellung["orderedArticleID"];
-                $name = $bestellung["name"];
-                $status = $bestellung["status"];
+                $orderedArticleID = htmlspecialchars($bestellung["orderedArticleID"]);
+                $name = htmlspecialchars($bestellung["name"]);
+                $status = htmlspecialchars($bestellung["status"]);
                 $this->fillStatusInfo($orderedArticleID, $name, $status);
             }
 
@@ -148,14 +148,15 @@ class Kunde extends Page
     {
         parent::processReceivedData();
 
-        if(count($_POST))
+        /*if(count($_POST))
         {
             if(isset($_POST))
             {
 
                 foreach ($_POST as $orderedArticleID => $status)
                 {
-                    $sqlAbfrage = "SELECT * FROM ordered_article WHERE ordered_article_id = $orderedArticleID";
+                    $sqlAbfrage = "SELECT * FROM ordered_article
+                    WHERE ordered_article_id = $orderedArticleID";
                     $recordSet = $this->database->query($sqlAbfrage);
 
                     if($recordSet->num_rows == 0)
@@ -165,12 +166,14 @@ class Kunde extends Page
                     }
                     else
                     {
-                        $sqlAbfrage = "UPDATE ordered_article SET status = $status WHERE ordered_article_id = $orderedArticleID";
+                        $sqlAbfrage = "UPDATE ordered_article
+                        SET status = $status
+                       WHERE ordered_article_id = $orderedArticleID";
                         $recordSet = $this->database->query($sqlAbfrage);
                     }
                 }
             }
-        }
+        }*/
     }
     public static function main():void
     {

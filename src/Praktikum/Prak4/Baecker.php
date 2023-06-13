@@ -1,35 +1,8 @@
 <?php declare(strict_types=1);
-// UTF-8 marker äöüÄÖÜß€
-/**
- * Class PageTemplate for the exercises of the EWA lecture
- * Demonstrates use of PHP including class and OO.
- * Implements Zend coding standards.
- * Generate documentation with Doxygen or phpdoc
- *
- * PHP Version 7.4
- *
- * @file     PageTemplate.php
- * @package  Page Templates
- * @author   Bernhard Kreling, <bernhard.kreling@h-da.de>
- * @author   Ralf Hahn, <ralf.hahn@h-da.de>
- * @version  3.1
- */
 
-// to do: change name 'PageTemplate' throughout this file
 require_once './Page.php';
 
-/**
- * This is a template for top level classes, which represent
- * a complete web page and which are called directly by the user.
- * Usually there will only be a single instance of such a class.
- * The name of the template is supposed
- * to be replaced by the name of the specific HTML page e.g. baker.
- * The order of methods might correspond to the order of thinking
- * during implementation.
- * @author   Bernhard Kreling, <bernhard.kreling@h-da.de>
- * @author   Ralf Hahn, <ralf.hahn@h-da.de>
- */
-class Baecker extends Page
+class BackerSeite extends Page
 {
     protected function __construct()
     {
@@ -39,156 +12,137 @@ class Baecker extends Page
     {
         parent::__destruct();
     }
-    protected function getViewData():array
+    protected function getViewData(): array
     {
-        $sqlRequestCommand = "SELECT* FROM ordered_article";
-        $recordSet = $this->database->query($sqlRequestCommand);
+        $sqlAbfrage = "SELECT ordered_article_id, 
+    name, status, ordering_time, ordering_id 
+    FROM article NATURAL JOIN ordered_article 
+    NATURAL JOIN ordering WHERE status < 3 
+    ORDER BY ordering_time, ordered_article_id;";
+
+        $recordSet = $this->database->query($sqlAbfrage);
         if (!$recordSet) {
-            throw new Exception("kein ordered_article table in der Datenbank");
+            throw new Exception("Keine Bestellung in Datenbank vorhanden");
         }
-        $bestellung = array();
-
-        // Benoetigte Eintraege für HTML-Ausgabe auslesen
-        while ($record= $recordSet->fetch_assoc()) {
-            $my_ordered_article_id = $record["ordered_article_id"];
-            $my_ordering_id = $record["ordering_id"];
-            $my_article_id = $record["article_id"];
-            $my_status = $record["status"];
-
-            //assign each row to an element of $bestellung array
-            $bestellung[] = array(
-                "ordered_article_id" => $my_ordered_article_id,
-                "ordering_id" => $my_ordering_id,
-                "article_id" => $my_article_id,
-                "status" => $my_status
-            );
+        $bestellungArray = array(array());
+        $record = $recordSet->fetch_assoc();
+        $count = 0;
+        while ($record) {
+            $bestellungArray[$count]["orderedArticleID"] = $record["ordered_article_id"];
+            $bestellungArray[$count]["name"] = $record["name"];
+            $bestellungArray[$count]["status"] = $record["status"];
+            $bestellungArray[$count]["orderingTime"] = $record["ordering_time"];
+            $bestellungArray[$count]["orderingID"] = $record["ordering_id"];
+            $record = $recordSet->fetch_assoc();
+            $count = $count + 1;
         }
-
         $recordSet->free();
 
-        return $bestellung;
+        return $bestellungArray;
     }
-    protected function generateView():void
+    private function fillPizzaInfo(string $orderedArticleID = "", string $name = "", string $status = "", string $orderingTime = "", string $orderingID = ""): void
     {
+        $idBestellt = "ordered" . "$orderedArticleID";
+        $idImOfen = "ofen" . "$orderedArticleID";
+        $idFertig = "fertig" . "$orderedArticleID";
+        $checkStatusArray = array(0 => "", 1 => "", 2 => "");
+
+        if ($status == "0") {
+            $checkStatusArray[0] = "checked";
+        } elseif ($status == "1") {
+            $checkStatusArray[1] = "checked";
+        } else {
+            $checkStatusArray[2] = "checked";
+        }
+        echo <<<EOT
+        <div>
+            <h3>$orderedArticleID $name | Ordering ID: $orderingID</h3>
+            <div>
+                <input form="$orderedArticleID" type="radio" name="pizzaStatus" value="0" $checkStatusArray[0]
+                onclick="this.form.submit();">
+                <label for="$idBestellt">Bestellt</label><br>
+                <input form="$orderedArticleID" type="radio" name="pizzaStatus" value="1" $checkStatusArray[1]
+                onclick="this.form.submit();">
+                <label for="$idImOfen">Im Ofen</label><br>
+                <input form="$orderedArticleID" type="radio" name="pizzaStatus" value="2" $checkStatusArray[2]
+                onclick="this.form.submit();">
+                <label for="$idFertig">Fertig</label><br>
+                <input form="$orderedArticleID" type="hidden" name="pizzaID" value=$orderedArticleID>
+            </div>
+        </div>
+
+EOT;
+    }
+
+    private function printPizzaList(array $data): void
+    {
+        foreach ($data as $bestellung){
+            $orderedArticleID = htmlspecialchars($bestellung["orderedArticleID"], ENT_QUOTES, 'UTF-8');
+            $name = htmlspecialchars($bestellung["name"], ENT_QUOTES, 'UTF-8');
+            $status = htmlspecialchars($bestellung["status"], ENT_QUOTES, 'UTF-8');
+            $orderingTime = htmlspecialchars($bestellung["orderingTime"], ENT_QUOTES, 'UTF-8');
+            $orderingID = htmlspecialchars($bestellung["orderingID"], ENT_QUOTES, 'UTF-8');
+
+            echo <<< EOT
+    <form id="$orderedArticleID" action="Baecker.php" method="post" lang="de" accept-charset="UTF-8"></form>
+
+EOT;
+            $this->fillPizzaInfo($orderedArticleID, $name, $status, $orderingTime, $orderingID);
+        }
+    }
+    protected function generateView(): void
+    {
+        $data = $this->getViewData();
+
         $sec = "10";
         $page = $_SERVER['PHP_SELF'];
-        header("Refresh: $sec; url = $page");
-        $this->generatePageHeader('Bäcker');
-        $bestellung = $this->getViewData();
-        echo <<<HERE
-        <h1>Bestellte Pizzen</h1>
-HERE;
+        header("Refresh: $sec; url=$page");
 
-        if (!$bestellung) {
-            echo "Keine Bestellungen!";
-        }
-        else {
-            echo <<<HERE
-        <form action="Baecker.php" id="BackerInfos" method="post" accept-charset="UTF-8">
-        <table>
-            <tr>
-                <th></th>
-                <th>bestellt</th>
-                <th>im Ofen</th>
-                <th>fertig</th>
-            </tr>
-HERE;
-            foreach ($bestellung as $row_bestellung) {
-                $idBestellt="bestellt" . "$row_bestellung[ordered_article_id]";
-                $idOfen="ofen" . "$row_bestellung[ordered_article_id]";
-                $idFertig="fertig" . "$row_bestellung[ordered_article_id]";
+        $this->generatePageHeader('Baecker');
 
-                $checkstatusarray = array(0 => "", 1 => "", 2 => "", 3=>"");
+        echo <<<EOT
+    <h1>Bestellte Pizzen</h1>
 
-                if($row_bestellung['status'] == "0"){
-                    $checkstatusarray[0] = "checked";
-                }
-                elseif ($row_bestellung['status'] == "1"){
-                    $checkstatusarray[1] = "checked";
-                }
-                elseif ($row_bestellung['status'] == "2") {
-                    $checkstatusarray[2] = "checked";
-                }
-                else{
-                    $checkstatusarray[3] = "checked";
-                }
-
-                $article_array = array(1=>"Salami", 2=>"Vegeteria", 3=>"Spinat-Hünchen");
-
-                if($row_bestellung['status'] == "3" || $row_bestellung['status'] == "4")
-                {
-                    continue;
-                }
-
-                echo <<<EOT
-        <tr>
-            <td>{$article_array[$row_bestellung['article_id']]} : Ordering ID: {$row_bestellung['ordering_id']} </td>
-            <td><label> <input type="radio" id="$idBestellt" name="$row_bestellung[ordered_article_id]" value="bestellt" $checkstatusarray[0]></label></td>
-            <td><label> <input type="radio" id="$idOfen" name="$row_bestellung[ordered_article_id]" value="im Ofen" $checkstatusarray[1]></label></td>
-            <td><label> <input type="radio" id="$idFertig" name="$row_bestellung[ordered_article_id]" value="fertig" $checkstatusarray[2]></label></td>
-        </tr>       
-    EOT;
-            };
-            echo <<<EOT
-            </table>
-            <input type="submit" id="submit" value="Bestätigen">
-            </form>
 EOT;
-        }
-
-
+        $this->printPizzaList($data);
         $this->generatePageFooter();
     }
-
-    protected function processReceivedData():void
+    protected function processReceivedData(): void
     {
         parent::processReceivedData();
-        $array = $this->getViewData();
-        //var_dump($array);
-        if (count($_POST)) {
-            if (isset($_POST)) {
-                foreach ($_POST as $ordered_article_id => $status) {
-                    $sqlRequestData =
-                        "SELECT * FROM ordered_article
-                    WHERE ordered_article_id = $ordered_article_id";
 
-                    $recordSet = $this->database->query($sqlRequestData);
+        if(count($_POST)){
+            if(isset($_POST["pizzaID"]) && isset($_POST["pizzaStatus"])) {
+                $orderedArticleID = $this->database->real_escape_string($_POST["pizzaID"]);
+                $status = $this->database->real_escape_string($_POST["pizzaStatus"]);
 
-                    if($recordSet->num_rows == 0)
-                    {
-                        $recordSet->free();
-                        throw new Exception("Keine Bestellung vorhanden");
-                    }
-                    else
-                    {
-                        if ($status == "bestellt") {
-                            $status = "0";
-                        }
-                        elseif ($status == "im Ofen") {
-                            $status = "1";
-                        }
-                        else {
-                            $status = "2";
-                        }
+                $sqlAbfrage =
+                    "SELECT * FROM ordered_article 
+                    WHERE ordered_article_id = \"$orderedArticleID\";";
 
-                        $sqlUpdateCommand = "UPDATE ordered_article 
-                                            SET status = $status 
-                                            WHERE ordered_article_id = $ordered_article_id";
-                        $this->database->query($sqlUpdateCommand);
-                    }
+                $recordset = $this->database->query($sqlAbfrage);
 
+                if ($recordset->num_rows == 0) {
+                    $recordset->free();
+                    throw new Exception(" Pizza nicht vorhanden!");
+
+                } else {
+                    $sqlAbfrage =
+                        "UPDATE ordered_article 
+                        SET status = \"$status\" 
+                        WHERE ordered_article_id = \"$orderedArticleID\";";
+                    $this->database->query($sqlAbfrage);
                 }
             }
         }
-
     }
 
-    public static function main():void
+    public static function main(): void
     {
         try {
-            $pageBaecker = new Baecker();
-            $pageBaecker->processReceivedData();
-            $pageBaecker->generateView();
+            $page = new BackerSeite();
+            $page->processReceivedData();
+            $page->generateView();
         } catch (Exception $e) {
             header("Content-type: text/html; charset=UTF-8");
             echo $e->getMessage();
@@ -196,4 +150,4 @@ EOT;
     }
 }
 
-Baecker::main();
+BackerSeite::main();

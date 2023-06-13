@@ -1,5 +1,4 @@
 'use strict'
-
 let total_price = 0.00;
  function clickFunction(event) {
      //access to name and price of articel using DOM
@@ -15,6 +14,7 @@ let total_price = 0.00;
      //create new option in the Warenkorb
      let newOption = document.createElement("option");
      let article_id;
+
      //generate article_id using article_name;
      switch (article_name) {
          case "Salami":
@@ -56,3 +56,7 @@ function deleteAllOptions() {
          warenkorb.remove(0);
      }
 };
+
+function deleteSelectedOption() {
+    
+}
