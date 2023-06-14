@@ -5,15 +5,6 @@ require_once './Page.php';
 
 class Bestellung extends Page
 {
-    // to do: declare reference variables for members
-    // representing substructures/blocks
-
-    /**
-     * Instantiates members (to be defined above).
-     * Calls the constructor of the parent i.e. page class.
-     * So, the database connection is established.
-     * @throws Exception
-     */
     protected function __construct()
     {
         parent::__construct();
@@ -54,7 +45,7 @@ class Bestellung extends Page
     protected function generateView(): void
     {
         $article_List = $this->getViewData();
-        $this->generatePageHeader('Bestellung'); //to do: set optional parameters
+        $this->generatePageHeader('Bestellung');
 
         echo <<<EOT
          <h1>Bestellung</h1>
@@ -85,11 +76,12 @@ EOT;
         echo <<< EOT
         </select>   
         <p id="gesamtpreis">Gesamtpreis: </span><span id="total_price">$total_price </span>&euro;</p>
-        <input id = "address_input" type="text" name="address-input" maxlength="60" placeholder="Ihre Adresse" value="" required style="display: block"/>
-        <button class="btn" id = "delete_all_btn" type="reset" value="Alle Löschen" onclick="deleteAllOptions()">Alle Löschen</button>
-        <button class="btn" id = "delete_btn" type="reset" value="Auswahl Löschen">Auswahl Löschen</button>
-        <button class="btn" id = "submit_btn" type="submit" value="Bestellen" name="bestellen-button">Submit</button>
+        <input id = "address_input" type="text" name="address-input" maxlength="60" placeholder="Ihre Adresse" value=""  required style="display: block"/>
+        <button class="btn" id = "delete_all_btn" type="button" value="Alle Löschen" onclick="deleteAllOptions()">Alle Löschen</button>
+        <button class="btn" id = "delete_btn" type="button" value="Auswahl Löschen" onclick="deleteSelectedOption()">Auswahl Löschen</button>
+        <button class="btn" id = "submit_btn" type="button" value="Bestellen" name="bestellen-button" onclick="select_all_items()">Bestellen</button>
     </form>
+    
     </section>
 EOT;
 
@@ -111,7 +103,9 @@ EOT;
                 session_start();
                 $sql_customer_address = $this->database->real_escape_string($customer_address);
                 $currentDateTime = date("Y-m-d H:i:s");
-                $sqlInsertCustomerAddressCommand = "INSERT INTO ordering SET address = '$sql_customer_address', ordering_time = '$currentDateTime'";
+                $sqlInsertCustomerAddressCommand =
+                    "INSERT INTO ordering 
+                    SET address = '$sql_customer_address', ordering_time = '$currentDateTime'";
                 $this->database->query($sqlInsertCustomerAddressCommand);
                 $new_inserted_ordering_id = $this->database->insert_id;
 
@@ -120,7 +114,8 @@ EOT;
                 //insert from warenkorb into ordered_article TABLE
                     $index = 0;
                     foreach ($ordered_article_list as $ordered_article) {
-                        $sqlInsertOrderedArticleCommand = "INSERT INTO ordered_article SET ".
+                        $sqlInsertOrderedArticleCommand = "INSERT INTO ordered_article 
+                            SET ".
                             "ordering_id = $new_inserted_ordering_id, ".
                             "article_id = $ordered_article_list[$index],".
                             "status = 0";

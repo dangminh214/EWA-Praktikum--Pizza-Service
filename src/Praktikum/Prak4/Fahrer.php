@@ -49,7 +49,11 @@ class Fahrer extends Page
             $orderingID = $record["ordering_id"];
 
             $oID = $this->database->real_escape_string($orderingID);
-            $pizzaAbfrage = "SELECT ordering_id, name, status, price FROM ordered_article NATURAL JOIN article WHERE ordering_id = \"$oID\" ORDER BY ordering_id";
+            $pizzaAbfrage = "SELECT ordering_id, name, status, price 
+            FROM ordered_article 
+            NATURAL JOIN article 
+            WHERE ordering_id = \"$oID\" 
+            ORDER BY ordering_id";
             $pizzaRecordSet = $this->database->query($pizzaAbfrage);
             $pizzaRecord = $pizzaRecordSet->fetch_assoc();
 
@@ -134,7 +138,6 @@ class Fahrer extends Page
         </div>
         <br>
         EOT;
-        var_dump($_POST);
     }
     protected function generateView():void
     {

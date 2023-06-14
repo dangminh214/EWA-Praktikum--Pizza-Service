@@ -74,19 +74,25 @@ EOT;
 
     private function printPizzaList(array $data): void
     {
-        foreach ($data as $bestellung){
-            $orderedArticleID = htmlspecialchars($bestellung["orderedArticleID"], ENT_QUOTES, 'UTF-8');
-            $name = htmlspecialchars($bestellung["name"], ENT_QUOTES, 'UTF-8');
-            $status = htmlspecialchars($bestellung["status"], ENT_QUOTES, 'UTF-8');
-            $orderingTime = htmlspecialchars($bestellung["orderingTime"], ENT_QUOTES, 'UTF-8');
-            $orderingID = htmlspecialchars($bestellung["orderingID"], ENT_QUOTES, 'UTF-8');
+        if (count($data[0])) {
+            foreach ($data as $bestellung){
+                $orderedArticleID = htmlspecialchars($bestellung["orderedArticleID"], ENT_QUOTES, 'UTF-8');
+                $name = htmlspecialchars($bestellung["name"], ENT_QUOTES, 'UTF-8');
+                $status = htmlspecialchars($bestellung["status"], ENT_QUOTES, 'UTF-8');
+                $orderingTime = htmlspecialchars($bestellung["orderingTime"], ENT_QUOTES, 'UTF-8');
+                $orderingID = htmlspecialchars($bestellung["orderingID"], ENT_QUOTES, 'UTF-8');
 
-            echo <<< EOT
+                echo <<< EOT
     <form id="$orderedArticleID" action="Baecker.php" method="post" lang="de" accept-charset="UTF-8"></form>
 
 EOT;
-            $this->fillPizzaInfo($orderedArticleID, $name, $status, $orderingTime, $orderingID);
+                $this->fillPizzaInfo($orderedArticleID, $name, $status, $orderingTime, $orderingID);
+            }
         }
+        else {
+            echo "Keine Bestellung vorhanden";
+        }
+
     }
     protected function generateView(): void
     {

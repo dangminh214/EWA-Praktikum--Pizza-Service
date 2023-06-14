@@ -98,6 +98,7 @@ abstract class Page
     <meta charset="UTF-8">
     <link rel = "stylesheet" type="text/css" href="$title.css"> 
     <script src="$title.js" type="text/javascript"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>$title</title>
 </head>
 <body>

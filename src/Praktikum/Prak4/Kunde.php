@@ -45,11 +45,12 @@ class Kunde extends Page
         session_start();
         if($_SESSION) {
             $last_ordering_id  = $_SESSION['last_ordering_id'];
-            $sqlAbfrage = "SELECT ordered_article_id, name, status 
-    FROM ordered_article 
-    NATURAL JOIN article 
-    WHERE ordering_id = $last_ordering_id
-    ORDER BY ordered_article_id"
+            $sqlAbfrage =
+                "SELECT ordered_article_id, name, status 
+                FROM ordered_article 
+                NATURAL JOIN article 
+                WHERE ordering_id = $last_ordering_id
+                ORDER BY ordered_article_id"
             ;
             $recordSet = $this->database->query($sqlAbfrage);
 
@@ -147,33 +148,6 @@ class Kunde extends Page
     protected function processReceivedData():void
     {
         parent::processReceivedData();
-
-        /*if(count($_POST))
-        {
-            if(isset($_POST))
-            {
-
-                foreach ($_POST as $orderedArticleID => $status)
-                {
-                    $sqlAbfrage = "SELECT * FROM ordered_article
-                    WHERE ordered_article_id = $orderedArticleID";
-                    $recordSet = $this->database->query($sqlAbfrage);
-
-                    if($recordSet->num_rows == 0)
-                    {
-                        $recordSet->free();
-                        throw new Exception("Keinen Artikel vorhanden");
-                    }
-                    else
-                    {
-                        $sqlAbfrage = "UPDATE ordered_article
-                        SET status = $status
-                       WHERE ordered_article_id = $orderedArticleID";
-                        $recordSet = $this->database->query($sqlAbfrage);
-                    }
-                }
-            }
-        }*/
     }
     public static function main():void
     {
