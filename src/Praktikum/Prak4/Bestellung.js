@@ -2,13 +2,11 @@
 
 let total_price = 0.00;
 let fixed_total_price;
-let string_price;
-let float_price;
-
 function AddAndShowTotalPrice(price) {
     total_price = total_price + parseFloat(price);
     fixed_total_price = total_price.toFixed(2);
     document.getElementById("total_price").textContent = fixed_total_price;
+    document.getElementById("submit_btn").style.display = 'block';
 }
 
 function SubAndShowTotalPrice(price) {
@@ -60,6 +58,7 @@ function clickFunction(event) {
             break;
     }
     AddAndShowTotalPrice(newOption.getAttribute('data-price'));
+
 }
 
 function deleteAllOptions() {
@@ -67,8 +66,10 @@ function deleteAllOptions() {
     while (warenkorb.options.length > 0) {
         warenkorb.remove(0);
     }
+
     total_price = 0;
     document.getElementById("total_price").textContent = total_price ;
+    document.getElementById("submit_btn").style.display = 'none';
 }
 
 function deleteSelectedOption() {
@@ -77,6 +78,8 @@ function deleteSelectedOption() {
             while (warenkorb.options[i].selected) {
                 SubAndShowTotalPrice(warenkorb.options[i].getAttribute('data-price'));
                 warenkorb.remove(i);
+                if (warenkorb.options.length == 0)
+                    document.getElementById("submit_btn").style.display = 'none';
             }
         }
 }
