@@ -1,4 +1,5 @@
-# Design seit dem 3.Praktikumstermin
+# Design seit dem 3.Praktikumstermin und JS im 4.Praktikumstermin 
+# Bemerkung: Projekt ist noch verarbeitet
 # Übersicht: 
 ![Übersicht](Uebersicht_img.jpeg)
 
