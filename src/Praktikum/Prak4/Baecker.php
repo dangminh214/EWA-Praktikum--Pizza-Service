@@ -59,13 +59,13 @@ class BackerSeite extends Page
             <h3>$orderedArticleID $name | Ordering ID: $orderingID</h3>
             <div>
                 <input form="$orderedArticleID" type="radio" name="pizzaStatus" value="0" $checkStatusArray[0]
-                onclick="this.form.submit();">
+                onclick="document.getElementById('$orderedArticleID').submit();">
                 <label for="$idBestellt">Bestellt</label><br>
                 <input form="$orderedArticleID" type="radio" name="pizzaStatus" value="1" $checkStatusArray[1]
-                onclick="this.form.submit();">
+                onclick="document.getElementById('$orderedArticleID').submit();">
                 <label for="$idImOfen">Im Ofen</label><br>
                 <input form="$orderedArticleID" type="radio" name="pizzaStatus" value="2" $checkStatusArray[2]
-                onclick="this.form.submit();">
+               onclick="document.getElementById('$orderedArticleID').submit();">
                 <label for="$idFertig">Fertig</label><br>
                 <input form="$orderedArticleID" type="hidden" name="pizzaID" value=$orderedArticleID>
             </div>

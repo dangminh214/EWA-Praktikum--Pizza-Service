@@ -57,7 +57,9 @@ EOT;
         <div class = "$article[name] article_detail" onclick = "clickFunction(event)">
             <img class="$article[name]" src=$article[picture] alt="" title="$article[name]"/>
             <p class = "$article[name] name" id="$article[name].name">$article[name]</p>
-            <p class = "$article[name] price"><span id="$article[name].price">$article[price]</span> &euro;</p>
+            <p class = "$article[name] price">
+                <span class = "$article[name]" id="$article[name].price">$article[price]</span> &euro;
+            </p>
         </div>
 EOT;
         };

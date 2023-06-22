@@ -1,41 +1,36 @@
 'use strict'
 
-function calculateToTalPrice() {
-    var total_price = 0.00;
-    var fixed_total_price = 0.00;
-    var warenkorb = document.getElementById("warenkorb");
-    if (warenkorb.options.length > 0) {
-        for (let i = 0; i < warenkorb.options.length; i++) {
-            var string_price = warenkorb.options[i].id;
-            var float_price = parseFloat(string_price);
-            total_price = (total_price + float_price);
-            fixed_total_price = total_price.toFixed(2);
-        }
-    }
-    else {
-        console.log("Warenkorb ist leer");
-    }
+let total_price = 0.00;
+let fixed_total_price;
+let string_price;
+let float_price;
+
+function AddAndShowTotalPrice(price) {
+    total_price = total_price + parseFloat(price);
+    fixed_total_price = total_price.toFixed(2);
     document.getElementById("total_price").textContent = fixed_total_price;
 }
 
-setInterval(calculateToTalPrice, 1000);
+function SubAndShowTotalPrice(price) {
+    total_price = total_price - parseFloat(price);
+    fixed_total_price = total_price.toFixed(2);
+    document.getElementById("total_price").textContent = fixed_total_price;
+}
+
 function clickFunction(event) {
-    //access to name and price of articel using DOM
+    //access to name and price of articles using DOM
     let article_name = event.target.classList.item(0);
-    let string_price = document.getElementById(`${article_name}.price`).textContent;
-
-    let float_price = parseFloat(string_price);
-
+    console.log(article_name);
     //create new option in the Warenkorb
     let newOption = document.createElement("option");
-    let article_id;
-
+    var article_id;
     //generate article_id using article_name;
     switch (article_name) {
         case "Salami":
-            article_id = 1;
-            newOption.id = float_price;
-            newOption.value = article_id;
+            article_id = "salami";
+            newOption.id = article_id;
+            newOption.value = 1;
+            newOption.setAttribute('data-price', '8.57');
             var textNode = document.createTextNode(`${article_name}`);
             newOption.appendChild(textNode);
             var warenkorb = document.getElementById("warenkorb");
@@ -43,9 +38,10 @@ function clickFunction(event) {
             break;
 
         case "Vegetaria":
-            article_id = 2;
-            newOption.id = float_price;
-            newOption.value = article_id;
+            article_id = "vegetaria";
+            newOption.id = article_id;
+            newOption.value = 2;
+            newOption.setAttribute('data-price', '12.5');
             var textNode = document.createTextNode(`${article_name}`);
             newOption.appendChild(textNode);
             var warenkorb = document.getElementById("warenkorb");
@@ -53,32 +49,36 @@ function clickFunction(event) {
             break;
 
         case "Spinat-Hühnchen":
-            article_id = 3;
-            newOption.id = float_price;
-            newOption.value = article_id;
+            article_id = "spinat-huenchen";
+            newOption.id = article_id;
+            newOption.value = 3;
+            newOption.setAttribute('data-price', '11.99');
             var textNode = document.createTextNode(`${article_name}`);
             newOption.appendChild(textNode);
             var warenkorb = document.getElementById("warenkorb");
             warenkorb.appendChild(newOption);
             break;
     }
+    AddAndShowTotalPrice(newOption.getAttribute('data-price'));
 }
 
 function deleteAllOptions() {
-    let warenkorb = document.getElementById("warenkorb");
+    var warenkorb = document.getElementById("warenkorb");
     while (warenkorb.options.length > 0) {
         warenkorb.remove(0);
     }
+    total_price = 0;
+    document.getElementById("total_price").textContent = total_price ;
 }
 
 function deleteSelectedOption() {
-    let warenkorb = document.getElementById("warenkorb");
+    var warenkorb = document.getElementById("warenkorb");
     for (let i = 0; i < warenkorb.options.length; i++) {
-        var option = warenkorb.options[i];
-        if (option.selected) {
-            warenkorb.remove(i);
+            while (warenkorb.options[i].selected) {
+                SubAndShowTotalPrice(warenkorb.options[i].getAttribute('data-price'));
+                warenkorb.remove(i);
+            }
         }
-    }
 }
 
 function select_all_items() {
