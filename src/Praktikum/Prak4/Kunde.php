@@ -1,34 +1,6 @@
 <?php declare(strict_types=1);
 // UTF-8 marker äöüÄÖÜß€
-/**
- * Class PageTemplate for the exercises of the EWA lecture
- * Demonstrates use of PHP including class and OO.
- * Implements Zend coding standards.
- * Generate documentation with Doxygen or phpdoc
- *
- * PHP Version 7.4
- *
- * @file     PageTemplate.php
- * @package  Page Templates
- * @author   Bernhard Kreling, <bernhard.kreling@h-da.de>
- * @author   Ralf Hahn, <ralf.hahn@h-da.de>
- * @version  3.1
- */
-
-// to do: change name 'PageTemplate' throughout this file
 require_once './Page.php';
-
-/**
- * This is a template for top level classes, which represent
- * a complete web page and which are called directly by the user.
- * Usually there will only be a single instance of such a class.
- * The name of the template is supposed
- * to be replaced by the name of the specific HTML page e.g. baker.
- * The order of methods might correspond to the order of thinking
- * during implementation.
- * @author   Bernhard Kreling, <bernhard.kreling@h-da.de>
- * @author   Ralf Hahn, <ralf.hahn@h-da.de>
- */
 class Kunde extends Page
 {
     protected function __construct()
@@ -78,7 +50,7 @@ class Kunde extends Page
         return $bestellungArray;
     }
 
-    private function fillStatusInfo(string $orderedArticleID = "", string $name = "", string $status = ""):void
+    private function fillStatusInfo(string $orderedArticleID = "", string $article_name = "", string $status = ""):void
     {
         $idBestellt="bestellt" . "$orderedArticleID";
         $idImOfen="imOfen" . "$orderedArticleID";
@@ -105,8 +77,9 @@ class Kunde extends Page
         }
 
         echo <<<EOT
-            <div>
-                <h3>$name: </h3><p>$checkstatusarray[$status]</p>
+            <div id="article_info">
+                <h3 id="article_info_name">$article_name: </h3>
+                <p id="article_info_status">$checkstatusarray[$status]</p>
             </div>
             <br>
         EOT;
@@ -120,7 +93,8 @@ class Kunde extends Page
         header("Refresh: $sec; url = $page");
         $this->generatePageHeader('Kunde');
         echo <<< EOT
-            <h2>Lieferstatus</h2>
+            <script src="StatusUpdate.js"></script>
+            <h1>Lieferstatus</h1>
             <form action="https://echo.fbi.h-da.de/" id="KundenInfos" method="post" accept-charset="UTF-8">
         EOT;
         if (!$_SESSION) {
@@ -132,6 +106,7 @@ class Kunde extends Page
                 $orderedArticleID = htmlspecialchars($bestellung["orderedArticleID"]);
                 $name = htmlspecialchars($bestellung["name"]);
                 $status = htmlspecialchars($bestellung["status"]);
+
                 $this->fillStatusInfo($orderedArticleID, $name, $status);
             }
 

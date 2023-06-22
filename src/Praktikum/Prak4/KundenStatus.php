@@ -18,7 +18,8 @@ class Kunde extends Page
         session_start();
         if ($_SESSION) {
             $last_ordering_id = $_SESSION['last_ordering_id'];
-            $sqlCommandToGroupUpOrderingID = "SELECT ordering_id, 
+            $sqlCommandToGroupUpOrderingID =
+                "SELECT ordering_id, 
        GROUP_CONCAT(article_id) AS article_ids, GROUP_CONCAT(status) AS status_ids
         FROM ordered_article
         WHERE ordering_id = $last_ordering_id

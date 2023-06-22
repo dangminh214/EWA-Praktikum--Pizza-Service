@@ -81,7 +81,6 @@ function deleteSelectedOption() {
     }
 }
 
-//TODO: FIX select_all_items()
 function select_all_items() {
     var warenkorb = document.getElementById("warenkorb");
     for (let i = 0; i < warenkorb.options.length; i++) {

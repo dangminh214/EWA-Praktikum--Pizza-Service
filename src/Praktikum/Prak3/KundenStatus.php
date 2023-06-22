@@ -29,7 +29,6 @@ class Kunde extends Page
                 throw new Exception("keine Article in der Datenbank");
             }
 
-
             while ($record = $recordSet->fetch_assoc()) {
                 $get_ordering_id_from_datenbank = $record["ordering_id"];
                 $get_article_id_from_datenbank = $record["article_ids"];

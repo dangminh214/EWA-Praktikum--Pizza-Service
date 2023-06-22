@@ -1,34 +1,6 @@
 <?php declare(strict_types=1);
 // UTF-8 marker äöüÄÖÜß€
-/**
- * Class PageTemplate for the exercises of the EWA lecture
- * Demonstrates use of PHP including class and OO.
- * Implements Zend coding standards.
- * Generate documentation with Doxygen or phpdoc
- *
- * PHP Version 7.4
- *
- * @file     PageTemplate.php
- * @package  Page Templates
- * @author   Bernhard Kreling, <bernhard.kreling@h-da.de>
- * @author   Ralf Hahn, <ralf.hahn@h-da.de>
- * @version  3.1
- */
-
-// to do: change name 'PageTemplate' throughout this file
 require_once './Page.php';
-
-/**
- * This is a template for top level classes, which represent
- * a complete web page and which are called directly by the user.
- * Usually there will only be a single instance of such a class.
- * The name of the template is supposed
- * to be replaced by the name of the specific HTML page e.g. baker.
- * The order of methods might correspond to the order of thinking
- * during implementation.
- * @author   Bernhard Kreling, <bernhard.kreling@h-da.de>
- * @author   Ralf Hahn, <ralf.hahn@h-da.de>
- */
 class Kunde extends Page
 {
     protected function __construct()
@@ -148,32 +120,6 @@ class Kunde extends Page
     {
         parent::processReceivedData();
 
-        /*if(count($_POST))
-        {
-            if(isset($_POST))
-            {
-
-                foreach ($_POST as $orderedArticleID => $status)
-                {
-                    $sqlAbfrage = "SELECT * FROM ordered_article 
-                    WHERE ordered_article_id = $orderedArticleID";
-                    $recordSet = $this->database->query($sqlAbfrage);
-
-                    if($recordSet->num_rows == 0)
-                    {
-                        $recordSet->free();
-                        throw new Exception("Keinen Artikel vorhanden");
-                    }
-                    else
-                    {
-                        $sqlAbfrage = "UPDATE ordered_article 
-                        SET status = $status 
-                       WHERE ordered_article_id = $orderedArticleID";
-                        $recordSet = $this->database->query($sqlAbfrage);
-                    }
-                }
-            }
-        }*/
     }
     public static function main():void
     {

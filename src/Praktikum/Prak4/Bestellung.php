@@ -124,7 +124,6 @@ EOT;
                         $index = $index+1;
                     }
             }
-
         }
     }
 
