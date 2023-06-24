@@ -48,8 +48,8 @@ class Bestellung extends Page
         $this->generatePageHeader('Bestellung');
 
         echo <<<EOT
+        <script src="Bestellung.js" type="text/javascript"></script>
          <h1>Bestellung</h1>
-         <body>
          <section class="article_detail_flex_container">
 EOT;
         foreach ($article_List as $article){

@@ -30,8 +30,6 @@ class Kunde extends Page
             {
                 throw new Exception("keine Bestellung vorhanden");
             }
-
-
             $count = 0;
 
             $record = $recordSet->fetch_assoc();
@@ -45,8 +43,6 @@ class Kunde extends Page
             }
             $recordSet->free();
         }
-
-
         return $bestellungArray;
     }
 
@@ -83,7 +79,6 @@ class Kunde extends Page
             </div>
             <br>
         EOT;
-
     }
     protected function generateView():void
     {
@@ -116,8 +111,6 @@ class Kunde extends Page
         </body>
         EOT;
         }
-
-
         $this->generatePageFooter();
     }
     protected function processReceivedData():void

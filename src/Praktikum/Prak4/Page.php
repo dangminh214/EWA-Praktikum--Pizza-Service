@@ -1,32 +1,5 @@
 <?php declare(strict_types=1);
 // UTF-8 marker äöüÄÖÜß€
-/**
- * Class Page for the exercises of the EWA lecture
- * Demonstrates use of PHP including class and OO.
- * Implements Zend coding standards.
- * Generate documentation with Doxygen or phpdoc
- *
- * PHP Version 7.4
- *
- * @file     Page.php
- * @package  Page Templates
- * @author   Bernhard Kreling, <bernhard.kreling@h-da.de>
- * @author   Ralf Hahn, <ralf.hahn@h-da.de>
- * @version  3.1
- */
-
-/**
- * This abstract class is a common base class for all
- * HTML-pages to be created.
- * It manages access to the database and provides operations
- * for outputting header and footer of a page.
- * Specific pages have to inherit from that class.
- * Each derived class can use these operations for accessing the database
- * and for creating the generic parts of a HTML-page.
- *
- * @author   Bernhard Kreling, <bernhard.kreling@h-da.de>
- * @author   Ralf Hahn, <ralf.hahn@h-da.de>
- */
 abstract class Page
 {
     // --- ATTRIBUTES ---
@@ -65,26 +38,10 @@ abstract class Page
             throw new Exception($this->database->error);
         }
     }
-
-    /**
-     * Closes the DB connection and cleans up
-     */
     public function __destruct()
     {
         // to do: close database
     }
-
-    /**
-     * Generates the header section of the page.
-     * i.e. starting from the content type up to the body-tag.
-     * Takes care that all strings passed from outside
-     * are converted to safe HTML by htmlspecialchars.
-     *
-     * @param string $title $title is the text to be used as title of the page
-     * @param string $jsFile path to a java script file to be included, default is "" i.e. no java script file
-     * @param bool $autoreload  true: auto reload the page every 5 s, false: not auto reload
-     * @return void
-     */
     protected function generatePageHeader(string $title = "", string $jsFile = "", bool $autoreload = false):void
     {
         $title = htmlspecialchars($title);
@@ -96,19 +53,13 @@ abstract class Page
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <link rel = "stylesheet" type="text/css" href="$title.css"> 
-    <script src="$title.js" type="text/javascript"></script>
+    <link rel = "stylesheet" type="text/css" href="Bestellung.css"> 
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>$title</title>
 </head>
 <body>
 EOT;
     }
-
-    /**
-     * Outputs the end of the HTML-file i.e. </body> etc.
-     * @return void
-     */
     protected function generatePageFooter():void
     {
         echo <<<EOT
@@ -126,15 +77,6 @@ EOT;
 </html>
 EOT;
     }
-
-    /**
-     * Processes the data that comes in via GET or POST.
-     * If every derived page is supposed to do something common
-     * with submitted data do it here.
-     * E.g. checking the settings of PHP that
-     * influence passing the parameters (e.g. magic_quotes).
-     * @return void
-     */
     protected function processReceivedData():void
     {
 
