@@ -46,7 +46,7 @@ class Kunde extends Page
         return $bestellungArray;
     }
 
-    private function fillStatusInfo(string $orderedArticleID = "", string $article_name = "", string $status = ""):void
+    private function fillStatusInfo(string $orderedArticleID = "", string $article_name = "", string $status = "", int $index = 0):void
     {
         $idBestellt="bestellt" . "$orderedArticleID";
         $idImOfen="imOfen" . "$orderedArticleID";
@@ -73,9 +73,9 @@ class Kunde extends Page
         }
 
         echo <<<EOT
-            <div id="article_info">
-                <h3 id="article_info_name">$article_name: </h3>
-                <p id="article_info_status">$checkstatusarray[$status]</p>
+            <div id="article_info" class = "kunde_info">
+                <h3 id="article_info_name.$index" class = "kunde_info" >$article_name: </h3>
+                <p id="article_info_status.$index" class = "kunde_info">$checkstatusarray[$status]</p>
             </div>
             <br>
         EOT;
@@ -92,9 +92,12 @@ class Kunde extends Page
             <h1>Lieferstatus</h1>
             <form action="https://echo.fbi.h-da.de/" id="KundenInfos" method="post" accept-charset="UTF-8">
         EOT;
+
+        $index = 0;
         if (!$_SESSION) {
             echo "Keine letzte Bestellung";
         }
+
         else {
             foreach ($data as $bestellung)
             {
@@ -102,7 +105,8 @@ class Kunde extends Page
                 $name = htmlspecialchars($bestellung["name"]);
                 $status = htmlspecialchars($bestellung["status"]);
 
-                $this->fillStatusInfo($orderedArticleID, $name, $status);
+                $this->fillStatusInfo($orderedArticleID, $name, $status, $index);
+                $index++;
             }
 
             echo <<< EOT

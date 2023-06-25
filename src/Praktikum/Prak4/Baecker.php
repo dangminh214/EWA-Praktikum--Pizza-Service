@@ -56,18 +56,25 @@ class BackerSeite extends Page
         }
         echo <<<EOT
         <div>
-            <h3>$orderedArticleID $name | Ordering ID: $orderingID</h3>
-            <div>
-                <input form="$orderedArticleID" type="radio" name="pizzaStatus" value="0" $checkStatusArray[0]
+            <h3 class="baecker_header">$orderedArticleID $name | Ordering ID: $orderingID</h3>
+            <div class="baecker_header">
+                <input class="baecker_header"
+                form="$orderedArticleID" type="radio" name="pizzaStatus" value="0" $checkStatusArray[0]
                 onclick="document.getElementById('$orderedArticleID').submit();">
-                <label for="$idBestellt">Bestellt</label><br>
-                <input form="$orderedArticleID" type="radio" name="pizzaStatus" value="1" $checkStatusArray[1]
+                <label class="baecker_header"
+                for="$idBestellt">Bestellt</label><br>
+                <input class="baecker_header"
+                 form="$orderedArticleID" type="radio" name="pizzaStatus" value="1" $checkStatusArray[1]
                 onclick="document.getElementById('$orderedArticleID').submit();">
-                <label for="$idImOfen">Im Ofen</label><br>
-                <input form="$orderedArticleID" type="radio" name="pizzaStatus" value="2" $checkStatusArray[2]
+                <label class="baecker_header"
+                for="$idImOfen">Im Ofen</label><br>
+                <input class="baecker_header"
+                form="$orderedArticleID" type="radio" name="pizzaStatus" value="2" $checkStatusArray[2]
                onclick="document.getElementById('$orderedArticleID').submit();">
-                <label for="$idFertig">Fertig</label><br>
-                <input form="$orderedArticleID" type="hidden" name="pizzaID" value=$orderedArticleID>
+                <label class="baecker_header"
+                for="$idFertig">Fertig</label><br>
+                <input class="baecker_header"
+                form="$orderedArticleID" type="hidden" name="pizzaID" value=$orderedArticleID>
             </div>
         </div>
 

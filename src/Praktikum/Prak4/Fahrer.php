@@ -123,9 +123,9 @@ class Fahrer extends Page
                     <table>
                         <tr>
                         <form id="$orderingID" action="Fahrer.php" method="post" accept-charset="UTF-8">
-                            <td><input form="$orderingID" type="radio" id="$idFertig" name="pizzaStatus" value="2" $checkstatusarray[0] onclick="this.form.submit();"><label for="$idFertig"></label>Fertig</label><br></td>
-                            <td><input form="$orderingID" type="radio" id="$idUnterwegs" name="pizzaStatus" value="3" $checkstatusarray[1] onclick="this.form.submit();"><label for="$idUnterwegs"><label>Unterwegs</label><br></td>
-                            <td><input form="$orderingID" type="radio" id="$idGeliefert" name="pizzaStatus" value="4" $checkstatusarray[2] onclick="this.form.submit();"><label for="$idGeliefert"><label>Geliefert</label><br></td>
+                            <td><input form="$orderingID" type="radio" id="$idFertig" name="pizzaStatus" value="2" $checkstatusarray[0] onclick="document.getElementById('$orderingID').submit();"><label for="$idFertig"></label>Fertig</label><br></td>
+                            <td><input form="$orderingID" type="radio" id="$idUnterwegs" name="pizzaStatus" value="3" $checkstatusarray[1] onclick="document.getElementById('$orderingID').submit();"><label for="$idUnterwegs"><label>Unterwegs</label><br></td>
+                            <td><input form="$orderingID" type="radio" id="$idGeliefert" name="pizzaStatus" value="4" $checkstatusarray[2] onclick="document.getElementById('$orderingID').submit();"><label for="$idGeliefert"><label>Geliefert</label><br></td>
                         </tr>                                                     
                     </table>
                     

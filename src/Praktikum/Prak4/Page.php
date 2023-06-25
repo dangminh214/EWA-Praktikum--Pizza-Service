@@ -46,8 +46,6 @@ abstract class Page
     {
         $title = htmlspecialchars($title);
         header("Content-type: text/html; charset=UTF-8");
-        // to do: handle all parameters
-        // output: header HTML code from baecker.php(praktikum1)
         echo <<<EOT
 <!DOCTYPE html>
 <html lang="de">

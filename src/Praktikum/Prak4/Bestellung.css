@@ -8,6 +8,11 @@ h1, h2 {
     letter-spacing: 5px;
     font-size: 45px;
 }
+table {
+    color: white;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 25px;
+}
 
 body {
     background-color: black;
@@ -21,6 +26,20 @@ body {
     display: flex;
     flex-direction: row;
     justify-content: center;
+}
+
+.kunde_info {
+    color: white;
+    font-family: 'Bebas Neue', sans-serif;
+    letter-spacing: 5px;
+    font-size: 25px;
+}
+
+.baecker_header {
+    color: white;
+    font-family: 'Bebas Neue', sans-serif;
+    letter-spacing: 5px;
+    font-size: 20px;
 }
 
 .article_detail {
@@ -102,14 +121,6 @@ img {
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
-}
-
-label {
-    font-family: 'Bebas Neue', sans-serif;
-    color: white;
-    letter-spacing: 5px;
-    font-size: 35px;
-    margin-left: 10px;
 }
 
 #gesamtpreis {

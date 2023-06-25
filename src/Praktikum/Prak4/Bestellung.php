@@ -8,7 +8,6 @@ class Bestellung extends Page
     protected function __construct()
     {
         parent::__construct();
-        // to do: instantiate members representing substructures/blocks
     }
 
     public function __destruct()
