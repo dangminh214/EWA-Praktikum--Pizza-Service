@@ -1,5 +1,4 @@
-# Design seit dem 3.Praktikumstermin und JS im 4.Praktikumstermin 
-# Bemerkung: Projekt ist noch verarbeitet
+# Design and JS Interaction are applied from 4.Praktikumstermin 
 # Übersicht: 
 ![Übersicht](Uebersicht_img.jpeg)
 
@@ -13,9 +12,11 @@ Using AJAX and JSON Status to update Information per 2s
 
 # Bäcker Seite: 
 ![image](https://github.com/dangminh214/EWA-Praktikum--Pizza-Service/assets/51837721/ba177d86-6f57-4918-8e76-0165fef41aa2)
+The Backers can change the status information of the ordered articles
 
 # Fahrer Seite: 
 ![image](https://github.com/dangminh214/EWA-Praktikum--Pizza-Service/assets/51837721/4cae4d2d-240d-4ea3-b53c-a785e324b51c)
+All of the Orders which have been done, will be shown for the delivers
 
 # Order Information has been saved as JSON 
 ![image](https://github.com/dangminh214/EWA-Praktikum--Pizza-Service/assets/51837721/533da9a7-06f5-442c-9731-7de50a87a81e)
