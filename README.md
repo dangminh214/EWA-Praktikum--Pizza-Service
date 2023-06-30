@@ -5,6 +5,20 @@
 
 # Bestellung: 
 ![Bestellung](Bestellung_img.jpeg)
+Using JS to GUI Interaction, save SESSION for Kunde
+
+# Kunde Seite: 
+![image](https://github.com/dangminh214/EWA-Praktikum--Pizza-Service/assets/51837721/c93ef365-2f5e-4e13-b18c-50ab4ed69e3c)
+Using AJAX and JSON Status to update Information per 2s
+
+# Bäcker Seite: 
+![image](https://github.com/dangminh214/EWA-Praktikum--Pizza-Service/assets/51837721/ba177d86-6f57-4918-8e76-0165fef41aa2)
+
+# Fahrer Seite: 
+![image](https://github.com/dangminh214/EWA-Praktikum--Pizza-Service/assets/51837721/4cae4d2d-240d-4ea3-b53c-a785e324b51c)
+
+# Order Information has been saved as JSON 
+![image](https://github.com/dangminh214/EWA-Praktikum--Pizza-Service/assets/51837721/533da9a7-06f5-442c-9731-7de50a87a81e)
 
 # EWA Docker Setup
 You know about [Docker](https://www.docker.com) and Docker is running on your system? You do not want to mess up your system by installing a web server and all the fancy software you need for EWA?
