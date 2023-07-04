@@ -1,63 +1,90 @@
-'use strict'
-function convertArticleIDToArticleName(id) {
-    switch (id) {
+function convertStatusIDToStatusName(status) {
+    "use strict";
+    switch (status) {
+        case "0":
+            return "bestellt";
+            break;
         case "1":
-            return "Salami";
+            return "im Ofen";
             break;
         case "2":
-            return "Vegetaria";
+            return "fertig";
             break;
         case "3":
-            return "Spinat Hühnchen";
+            return "unterwegs";
+            break;
+        case "4":
+            return "geliefert";
             break;
     }
 }
-function convertStatusIDToStatusName(id) {
-    switch (id) {
-        case "0":
-            return "Bestellt";
-            break;
-        case "1":
-            return "Im Ofen";
-            break;
-        case "2":
-            return "Fertig";
-            break;
-    }
-}
-function process(jsonFile) {
-    const data = JSON.parse(jsonFile);
 
-    if (!data || data.length === 0) {
+function createNewOrder(article){
+    "use strict";
+    var customOrder = document.createElement('section');
+    customOrder.classList.add('custom-order');
+
+    var customOrderPizzaName = document.createElement('h3');
+    customOrderPizzaName.textContent = article["name"];
+    customOrderPizzaName.className = "pizza_name";
+
+    var pizza_id = document.createElement("h4");
+    pizza_id.classname= "pizza_id";
+    pizza_id.setAttribute('value', article["orderedArticleID"]);
+    pizza_id.textContent = "Ordered Article ID: " + article["orderedArticleID"];
+
+    var statusLine = document.createElement('p');
+    statusLine.textContent = convertStatusIDToStatusName(article["orderedArticleID"]);
+
+    customOrder.appendChild(statusLine);
+    customOrder.appendChild(customOrderPizzaName);
+    customOrder.appendChild(pizza_id);
+
+
+    return customOrder;
+}
+
+function updateStatus(pizzaOrder, status){
+    "use strict";
+    var newStatus = convertStatusIDToStatusName(status);
+    var statusLine = pizzaOrder.querySelector('p');
+    statusLine.textContent = newStatus;
+}
+
+function checkExistingOrder(orderID){
+    "use strict";
+    var allPizzas = document.getElementById("pizza-container").querySelectorAll("section");
+    for(var i = 0; i < allPizzas.length; i++){
+        var order = allPizzas[i];
+        if (order.querySelector("input[name=pizza_id]") === null){
+            return;
+        }
+        if(order.querySelector("input[name=pizza_id]").getAttribute("value") === orderID){
+            return allPizzas[i];
+        }
+    }
+    return null;
+}
+function process(intext) {
+    "use strict";
+    var orderedArticles = JSON.parse(intext);
+    var pizzaContainer = document.getElementById('pizza-container');
+
+    if(orderedArticles.length == 0){
         console.error("No pizza data found.");
         return;
     }
-    let array_article_id  = []
-    let array_article_status = []
 
-    for (var i = 0; i < data[0].article_id.length; i = i+2) {
-        array_article_id.push(data[0].article_id[i]);
-    }
-    for (var i = 0; i < data[0].article_id.length; i = i+2) {
-        array_article_status.push(data[0].article_status[i]);
-    }
-
-    var index = 0;
-
-    //Console.log only for testing
-
-    //console.log(`article_info_name.${index}`);
-
-    for (var i = 0; i <array_article_id.length; i++) {
-        document.getElementById(`article_info_name.${index}`).textContent
-            = convertArticleIDToArticleName(array_article_id[i]);
-        //console.log(`article_info_name.${index}`);
-
-        document.getElementById(`article_info_status.${index}`).textContent
-            = convertStatusIDToStatusName(array_article_status[i]);
-        //console.log(`article_info_status.${index}`);
-        index++;
-    }
+    orderedArticles.forEach(article =>{
+        var pizzaOrder;
+        if((pizzaOrder = checkExistingOrder(article["orderedArticleID"])) != null){
+            updateStatus(pizzaOrder, article["status"]);
+        }
+        else{
+            pizzaOrder = createNewOrder(article);
+            pizzaContainer.appendChild(pizzaOrder);
+        }
+    })
 }
 
 // request als globale Variable anlegen (haesslich, aber bequem)
@@ -69,9 +96,10 @@ function requestData() { // fordert die Daten asynchron an
     request.send(null); // Request abschicken
 }
 
- function processData() {
-    if(request.readyState == 4) { // Uebertragung = DONE
-        if (request.status == 200) {   // HTTP-Status = OK
+function processData() {
+    "use strict";
+    if(request.readyState === 4) { // Uebertragung = DONE
+        if (request.status === 200) {   // HTTP-Status = OK
             if(request.responseText != null) {
                 process(request.responseText);// Daten verarbeiten
             }
@@ -81,4 +109,6 @@ function requestData() { // fordert die Daten asynchron an
     } else ;          // Uebertragung laeuft noch
 }
 
-window.setInterval(requestData, 2000)
+document.addEventListener("DOMContentLoaded", function (){
+    window.setInterval(requestData, 2000);
+})

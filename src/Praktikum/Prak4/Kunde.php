@@ -46,7 +46,7 @@ class Kunde extends Page
         return $bestellungArray;
     }
 
-    private function fillStatusInfo(string $orderedArticleID = "", string $article_name = "", string $status = "", int $index = 0):void
+    private function fillStatusInfo(string $orderedArticleID = "", string $article_name = "", string $status = ""):void
     {
         $idBestellt="bestellt" . "$orderedArticleID";
         $idImOfen="imOfen" . "$orderedArticleID";
@@ -73,10 +73,12 @@ class Kunde extends Page
         }
 
         echo <<<EOT
-            <div id="article_info" class = "kunde_info">
-                <h3 id="article_info_name.$index" class = "kunde_info" >$article_name: </h3>
-                <p id="article_info_status.$index" class = "kunde_info">$checkstatusarray[$status]</p>
-            </div>
+            <section className="pizza_Order" class="myDiv">
+                <h3>$article_name</h3>
+                <h4>Ordered Article ID: $orderedArticleID</h4>
+                <input type="hidden" name="pizza_id" value="$orderedArticleID">
+                <p>$checkstatusarray[$status]</p>
+            </section>
             <br>
         EOT;
     }
@@ -90,12 +92,24 @@ class Kunde extends Page
         echo <<< EOT
             <script src="StatusUpdate.js"></script>
             <h1>Lieferstatus</h1>
-            <form action="https://echo.fbi.h-da.de/" id="KundenInfos" method="post" accept-charset="UTF-8">
+             <nav class="horizontal_nav">
+            <ul>
+                <li class="horizontal-li"> <a href="Uebersicht.php">Übersicht</a></li>
+                <li class="horizontal-li" ><a href="Bestellung.php">Bestellung</a></li>
+                <li class="horizontal-li"><a href="Kunde.php">Kunde</a></li>
+                <li class="horizontal-li"><a href="Baecker.php">Bäcker</a></li>
+                <li class="horizontal-li"><a href="Fahrer.php">Fahrer</a></li>
+            </ul>
+        </nav>
+            <div id="pizza-container">
         EOT;
 
         $index = 0;
         if (!$_SESSION) {
-            echo "Keine letzte Bestellung";
+            echo <<<EOT
+            <p class = "warning"> KEINE LETZTE BESTELLUNG </p>
+            EOT;
+
         }
 
         else {
@@ -110,8 +124,7 @@ class Kunde extends Page
             }
 
             echo <<< EOT
-                <input type="submit" id="submit" value="Neue Bestellung">
-            </form>
+            </div>
         </body>
         EOT;
         }

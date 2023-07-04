@@ -60,7 +60,6 @@ EOT;
             </ul>
         </nav>
     </section>
-</body>
 HERE;
         $this->generatePageFooter();
     }

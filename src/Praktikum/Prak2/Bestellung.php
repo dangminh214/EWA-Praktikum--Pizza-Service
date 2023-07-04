@@ -1,35 +1,8 @@
 <?php
 declare(strict_types=1);
-// UTF-8 marker äöüÄÖÜß€
-/**
- * Class PageTemplate for the exercises of the EWA lecture
- * Demonstrates use of PHP including class and OO.
- * Implements Zend coding standards.
- * Generate documentation with Doxygen or phpdoc
- *
- * PHP Version 7.4
- *
- * @file     PageTemplate.php
- * @package  Page Templates
- * @author   Bernhard Kreling, <bernhard.kreling@h-da.de>
- * @author   Ralf Hahn, <ralf.hahn@h-da.de>
- * @version  3.1
- */
 
-// to do: change name 'PageTemplate' throughout this file
 require_once './Page.php';
 
-/**
- * This is a template for top level classes, which represent
- * a complete web page and which are called directly by the user.
- * Usually there will only be a single instance of such a class.
- * The name of the template is supposed
- * to be replaced by the name of the specific HTML page e.g. baker.
- * The order of methods might correspond to the order of thinking
- * during implementation.
- * @author   Bernhard Kreling, <bernhard.kreling@h-da.de>
- * @author   Ralf Hahn, <ralf.hahn@h-da.de>
- */
 class Bestellung extends Page
 {
     // to do: declare reference variables for members

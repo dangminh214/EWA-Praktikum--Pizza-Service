@@ -46,7 +46,7 @@ abstract class Page
     {
         $title = htmlspecialchars($title);
         header("Content-type: text/html; charset=UTF-8");
-        echo <<<EOT
+        echo <<<HTML
 <!DOCTYPE html>
 <html lang="de">
 <head>
@@ -56,24 +56,26 @@ abstract class Page
     <title>$title</title>
 </head>
 <body>
-EOT;
+
+HTML;
     }
     protected function generatePageFooter():void
     {
-        echo <<<EOT
-    </body>
-    <footer>
+        echo <<<HTML
+
+<footer>
     <p style="margin-left: 20px; font-size: 30px">Pizza Shop</p>
     <p>Contact: dangminh214@gmail.com</p>
     <p> All rights reserved.</p>
     <div>
-        <p>Hochschule Darmstadt</p> 
+        <p>Hochschule Darmstadt</p>
         <p>Fachbereich Informatik</p>
     </div>
-    <p style="margin-right: 20px" >&copy; 2023 PizzaService</p> 
-  </footer>
+    <p style="margin-right: 20px" >&copy; 2023 PizzaService</p>   
+</footer>
+</body>
 </html>
-EOT;
+HTML;
     }
     protected function processReceivedData():void
     {

@@ -40,7 +40,7 @@ class BackerSeite extends Page
 
         return $bestellungArray;
     }
-    private function fillPizzaInfo(string $orderedArticleID = "", string $name = "", string $status = "", string $orderingTime = "", string $orderingID = ""): void
+    private function fillPizzaInfo(string $formID = "", string $orderedArticleID = "", string $name = "", string $status = "", string $orderingTime = "", string $orderingID = ""): void
     {
         $idBestellt = "ordered" . "$orderedArticleID";
         $idImOfen = "ofen" . "$orderedArticleID";
@@ -59,22 +59,22 @@ class BackerSeite extends Page
             <h3 class="baecker_header">$orderedArticleID $name | Ordering ID: $orderingID</h3>
             <div class="baecker_header">
                 <input class="baecker_header"
-                form="$orderedArticleID" type="radio" name="pizzaStatus" value="0" $checkStatusArray[0]
-                onclick="document.getElementById('$orderedArticleID').submit();">
+                form="$formID" type="radio" name="pizzaStatus" value="0" $checkStatusArray[0]
+                onclick="document.forms['$formID'].submit();">
                 <label class="baecker_header"
                 for="$idBestellt">Bestellt</label><br>
                 <input class="baecker_header"
-                 form="$orderedArticleID" type="radio" name="pizzaStatus" value="1" $checkStatusArray[1]
-                onclick="document.getElementById('$orderedArticleID').submit();">
+                 form="$formID" type="radio" name="pizzaStatus" value="1" $checkStatusArray[1]
+                onclick="document.forms['$formID'].submit();">
                 <label class="baecker_header"
                 for="$idImOfen">Im Ofen</label><br>
                 <input class="baecker_header"
-                form="$orderedArticleID" type="radio" name="pizzaStatus" value="2" $checkStatusArray[2]
-               onclick="document.getElementById('$orderedArticleID').submit();">
+                form="$formID" type="radio" name="pizzaStatus" value="2" $checkStatusArray[2]
+               onclick="document.forms['$formID'].submit();">
                 <label class="baecker_header"
                 for="$idFertig">Fertig</label><br>
                 <input class="baecker_header"
-                form="$orderedArticleID" type="hidden" name="pizzaID" value=$orderedArticleID>
+                form="$formID" type="hidden" name="pizzaID" value=$orderedArticleID>
             </div>
         </div>
 
@@ -86,20 +86,23 @@ EOT;
         if (count($data[0])) {
             foreach ($data as $bestellung){
                 $orderedArticleID = htmlspecialchars($bestellung["orderedArticleID"], ENT_QUOTES, 'UTF-8');
+                $formID = "Pizza" . $orderedArticleID;
                 $name = htmlspecialchars($bestellung["name"], ENT_QUOTES, 'UTF-8');
                 $status = htmlspecialchars($bestellung["status"], ENT_QUOTES, 'UTF-8');
                 $orderingTime = htmlspecialchars($bestellung["orderingTime"], ENT_QUOTES, 'UTF-8');
                 $orderingID = htmlspecialchars($bestellung["orderingID"], ENT_QUOTES, 'UTF-8');
 
                 echo <<< EOT
-    <form id="$orderedArticleID" action="Baecker.php" method="post" lang="de" accept-charset="UTF-8"></form>
+    <form id="$formID" action="Baecker.php" method="post" lang="de" accept-charset="UTF-8"></form>
 
 EOT;
-                $this->fillPizzaInfo($orderedArticleID, $name, $status, $orderingTime, $orderingID);
+                $this->fillPizzaInfo($formID, $orderedArticleID, $name, $status, $orderingTime, $orderingID);
             }
         }
         else {
-            echo "Keine Bestellung vorhanden";
+            echo <<<EOT
+            <p class = "warning"> KEINE BESTELLUNG </p>
+            EOT;;
         }
 
     }

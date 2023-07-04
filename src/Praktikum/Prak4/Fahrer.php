@@ -107,6 +107,8 @@ class Fahrer extends Page
             $checkstatusarray[2] = "checked";
         }
 
+        $formID = "ID" . $orderingID;
+
         echo <<< EOT
         <div>
             <table>
@@ -122,16 +124,16 @@ class Fahrer extends Page
                 <tr>
                     <table>
                         <tr>
-                        <form id="$orderingID" action="Fahrer.php" method="post" accept-charset="UTF-8">
-                            <td><input form="$orderingID" type="radio" id="$idFertig" name="pizzaStatus" value="2" $checkstatusarray[0] onclick="document.getElementById('$orderingID').submit();"><label for="$idFertig"></label>Fertig</label><br></td>
-                            <td><input form="$orderingID" type="radio" id="$idUnterwegs" name="pizzaStatus" value="3" $checkstatusarray[1] onclick="document.getElementById('$orderingID').submit();"><label for="$idUnterwegs"><label>Unterwegs</label><br></td>
-                            <td><input form="$orderingID" type="radio" id="$idGeliefert" name="pizzaStatus" value="4" $checkstatusarray[2] onclick="document.getElementById('$orderingID').submit();"><label for="$idGeliefert"><label>Geliefert</label><br></td>
+                        <form id="$formID" action="Fahrer.php" method="post" accept-charset="UTF-8">
+                            <td><input type="radio" id="$idFertig" name="pizzaStatus" value="2" $checkstatusarray[0] onclick="document.forms['$formID'].submit();"><label for="$idFertig"></label>Fertig</label><br></td>
+                            <td><input type="radio" id="$idUnterwegs" name="pizzaStatus" value="3" $checkstatusarray[1] onclick="document.forms['$formID'].submit();"><label for="$idUnterwegs"><label>Unterwegs</label><br></td>
+                            <td><input type="radio" id="$idGeliefert" name="pizzaStatus" value="4" $checkstatusarray[2] onclick="document.forms['$formID'].submit();"><label for="$idGeliefert"><label>Geliefert</label><br></td>
                         </tr>                                                     
                     </table>
                     
                 </tr>
                 <tr>
-                    <input form="$orderingID" type="hidden" name="orderingID" value=$orderingID>
+                    <input form="$formID" type="hidden" name="orderingID" value=$orderingID>
                 </tr>
             </table>
             </form>
@@ -149,6 +151,15 @@ class Fahrer extends Page
 
         echo <<< EOT
             <h2>Auslieferbare Bestellungen</h2>      
+            <nav class="horizontal_nav">
+            <ul>
+                <li class="horizontal-li"> <a href="Uebersicht.php">Übersicht</a></li>
+                <li class="horizontal-li" ><a href="Bestellung.php">Bestellung</a></li>
+                <li class="horizontal-li"><a href="Kunde.php">Kunde</a></li>
+                <li class="horizontal-li"><a href="Baecker.php">Bäcker</a></li>
+                <li class="horizontal-li"><a href="Fahrer.php">Fahrer</a></li>
+            </ul>
+        </nav>
         EOT;
 
         foreach ($data as $liefer) {

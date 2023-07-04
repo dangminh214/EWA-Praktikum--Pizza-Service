@@ -14,35 +14,37 @@ class Kunde extends Page
     }
     protected function getViewData():array
     {
-        $ordering_List = array();
+        $bestellungArray = array();
         session_start();
-        if ($_SESSION) {
-            $last_ordering_id = $_SESSION['last_ordering_id'];
-            $sqlCommandToGroupUpOrderingID =
-                "SELECT ordering_id, 
-       GROUP_CONCAT(article_id) AS article_ids, GROUP_CONCAT(status) AS status_ids
-        FROM ordered_article
-        WHERE ordering_id = $last_ordering_id
-        GROUP BY ordering_id;";
+        if($_SESSION) {
+            $last_ordering_id  = $_SESSION['last_ordering_id'];
+            $sqlAbfrage =
+                "SELECT ordered_article_id, name, status 
+                FROM ordered_article 
+                NATURAL JOIN article 
+                WHERE ordering_id = $last_ordering_id
+                ORDER BY ordered_article_id"
+            ;
+            $recordSet = $this->database->query($sqlAbfrage);
 
-            $recordSet = $this->database->query($sqlCommandToGroupUpOrderingID);
-            if (!$recordSet) {
-                throw new Exception("keine Article in der Datenbank");
+            if(!$recordSet)
+            {
+                throw new Exception("keine Bestellung vorhanden");
             }
-            while ($record = $recordSet->fetch_assoc()) {
-                $get_ordering_id_from_datenbank = $record["ordering_id"];
-                $get_article_id_from_datenbank = $record["article_ids"];
-                $get_article_status_from_datenbank = $record["status_ids"];
+            $count = 0;
 
-                $ordering_List[] = array(
-                    "ordering_id" => $get_ordering_id_from_datenbank,
-                    "article_id" => $get_article_id_from_datenbank,
-                    "article_status" => $get_article_status_from_datenbank
-                );
+            $record = $recordSet->fetch_assoc();
+            while ($record)
+            {
+                $bestellungArray[$count]["orderedArticleID"] = $record["ordered_article_id"];
+                $bestellungArray[$count]["name"] = $record["name"];
+                $bestellungArray[$count]["status"] = $record["status"];
+                $record = $recordSet->fetch_assoc();
+                $count++;
             }
             $recordSet->free();
         }
-        return $ordering_List;
+        return $bestellungArray;
     }
 
     //Generate JSON File

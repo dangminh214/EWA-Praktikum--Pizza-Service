@@ -142,7 +142,6 @@ EOT;
                     $index = $index+1;
                 }
             }
-
         }
     }
     public static function main(): void

@@ -17,13 +17,12 @@ class Bestellung extends Page
 
     protected function getViewData(): array
     {
+        $article_List = array();
         $sqlAbfrageCommand = "SELECT* FROM article";
         $recordSet = $this->database->query($sqlAbfrageCommand);
         if(!$recordSet) {
             throw new Exception("keine Article in der Datenbank");
         }
-        $article_List = array();
-
         while ($record = $recordSet->fetch_assoc()) {
             $get_article_id_from_datenbank = $record["article_id"];
             $get_name_from_datenbank = $record["name"];
@@ -46,25 +45,52 @@ class Bestellung extends Page
         $article_List = $this->getViewData();
         $this->generatePageHeader('Bestellung');
 
-        echo <<<EOT
+        echo <<<HTML
         <script src="Bestellung.js" type="text/javascript"></script>
          <h1>Bestellung</h1>
+          <nav class="horizontal_nav">
+            <ul>
+                <li class="horizontal-li"> <a href="Uebersicht.php">Übersicht</a></li>
+                <li class="horizontal-li" ><a href="Bestellung.php">Bestellung</a></li>
+                <li class="horizontal-li"><a href="Kunde.php">Kunde</a></li>
+                <li class="horizontal-li"><a href="Baecker.php">Bäcker</a></li>
+                <li class="horizontal-li"><a href="Fahrer.php">Fahrer</a></li>
+            </ul>
+        </nav>
          <section class="article_detail_flex_container">
-EOT;
+
+HTML;
         foreach ($article_List as $article){
             echo <<< EOT
-        <div class = "$article[name] article_detail" onclick = "clickFunction(event)">
-            <img class="$article[name]" src=$article[picture] alt="" title="$article[name]"/>
-            <p class = "$article[name] name" id="$article[name].name">$article[name]</p>
-            <p class = "$article[name] price">
-                <span class = "$article[name]" id="$article[name].price">$article[price]</span> &euro;
+        <div class = "$article[name] article_detail" 
+        onclick = "clickFunction(event)" 
+        data-name = "$article[name]"
+        data-price = "$article[price]"
+        data-value = "$article[article_id]">
+            <img class="$article[name]" src=$article[picture] alt="" 
+            title="$article[name]"
+            data-name = "$article[name]"
+            data-price = "$article[price]"
+            data-value = "$article[article_id]"/>
+        <p class = "$article[name] name" id="$article[name].name"
+        data-name = "$article[name]"
+        data-price = "$article[price]"
+        data-value = "$article[article_id]">$article[name]</p>
+        <p class = "$article[name] price"
+        data-name = "$article[name]"
+        data-price = "$article[price]"
+        data-value = "$article[article_id]">
+                <span class = "$article[name]" id="$article[name].price"
+                data-name = "$article[name]"
+        data-price = "$article[price]"
+        data-value = "$article[article_id]">$article[price]</span> &euro;
             </p>
         </div>
 EOT;
         };
         //Warenkorb
         $total_price = 0;
-        echo <<< EOT
+        echo <<<HTML
     </section>
     <p id="delimeterSection"> </p>
     
@@ -72,19 +98,20 @@ EOT;
     <h2>WARENKORB</h2>
     <form action="Bestellung.php" id="BestellungsInfos" method="post"  accept-charset="UTF-8">
         <select id = "warenkorb" name="warenkorb[]" multiple="multiple" size="5">
-EOT;
+HTML;
 
-        echo <<< EOT
+        echo <<<HTML
         </select>   
-        <p id="gesamtpreis">Gesamtpreis: </span><span id="total_price">$total_price </span>&euro;</p>
-        <input id = "address_input" type="text" name="address-input" maxlength="60" placeholder="Ihre Adresse" value=""  required style="display: block"/>
+        <p id="gesamtpreis">Gesamtpreis: <span id="total_price">$total_price </span>&euro;</p>
+        <input id = "address_input" type="text" name="address-input" maxlength="60" placeholder="Ihre Adresse" value=""  
+        oninput = "showBestellenBtnWhenInputAdress();" required style="display: block"/>
         <button class="btn" id = "delete_all_btn" type="button" value="Alle Löschen" onclick="deleteAllOptions()">Alle Löschen</button>
         <button class="btn" id = "delete_btn" type="button" value="Auswahl Löschen" onclick="deleteSelectedOption()">Auswahl Löschen</button>
         <button class="btn" id = "submit_btn" type="button" value="Bestellen" name="bestellen-button" onclick="select_all_items()">Bestellen</button>
     </form>
-    
     </section>
-EOT;
+
+HTML;
 
         $this->generatePageFooter();
     }
