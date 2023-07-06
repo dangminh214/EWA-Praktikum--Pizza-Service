@@ -62,17 +62,6 @@ HTML;
     protected function generatePageFooter():void
     {
         echo <<<HTML
-
-<footer>
-    <p style="margin-left: 20px; font-size: 30px">Pizza Shop</p>
-    <p>Contact: dangminh214@gmail.com</p>
-    <p> All rights reserved.</p>
-    <div>
-        <p>Hochschule Darmstadt</p>
-        <p>Fachbereich Informatik</p>
-    </div>
-    <p style="margin-right: 20px" >&copy; 2023 PizzaService</p>   
-</footer>
 </body>
 </html>
 HTML;

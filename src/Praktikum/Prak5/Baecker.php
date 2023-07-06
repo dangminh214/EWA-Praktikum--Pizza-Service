@@ -55,26 +55,16 @@ class BackerSeite extends Page
             $checkStatusArray[2] = "checked";
         }
         echo <<<EOT
-        <div>
-            <h3 class="baecker_header">$orderedArticleID $name | Ordering ID: $orderingID</h3>
-            <div class="baecker_header">
-                <input class="baecker_header"
-                form="$formID" type="radio" name="pizzaStatus" value="0" $checkStatusArray[0]
-                onclick="document.forms['$formID'].submit();">
-                <label class="baecker_header"
-                for="$idBestellt">Bestellt</label><br>
-                <input class="baecker_header"
-                 form="$formID" type="radio" name="pizzaStatus" value="1" $checkStatusArray[1]
-                onclick="document.forms['$formID'].submit();">
-                <label class="baecker_header"
-                for="$idImOfen">Im Ofen</label><br>
-                <input class="baecker_header"
-                form="$formID" type="radio" name="pizzaStatus" value="2" $checkStatusArray[2]
-               onclick="document.forms['$formID'].submit();">
-                <label class="baecker_header"
-                for="$idFertig">Fertig</label><br>
-                <input class="baecker_header"
-                form="$formID" type="hidden" name="pizzaID" value=$orderedArticleID>
+        <div class="pizzaInfos">
+            <h2>$orderedArticleID $name | Ordering ID: $orderingID</h2>
+            <div>
+                <input form="$formID" id="$idBestellt" type="radio" name="pizzaStatus" value="0" $checkStatusArray[0] onclick="document.forms['$formID'].submit();">
+                <label for="$idBestellt">Bestellt</label><br>
+                <input form="$formID" id="$idImOfen" type="radio" name="pizzaStatus" value="1" $checkStatusArray[1] onclick="document.forms['$formID'].submit();">
+                <label for="$idImOfen">Im Ofen</label><br>
+                <input form="$formID" id="$idFertig" type="radio" name="pizzaStatus" value="2" $checkStatusArray[2] onclick="document.forms['$formID'].submit();">
+                <label for="$idFertig">Fertig</label><br>
+                <input form="$formID" type="hidden" name="pizzaID" value=$orderedArticleID>
             </div>
         </div>
 

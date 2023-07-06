@@ -3,6 +3,7 @@
 require_once './Page.php';
 class Kunde extends Page
 {
+    protected bool $isSession = false;
     protected function __construct()
     {
         parent::__construct();
@@ -14,8 +15,8 @@ class Kunde extends Page
     protected function getViewData():array
     {
         $bestellungArray = array();
-        session_start();
-        if($_SESSION) {
+        if(isset($_SESSION['last_ordering_id'])) {
+            $this->isSession = true;
             $last_ordering_id  = $_SESSION['last_ordering_id'];
             $sqlAbfrage =
                 "SELECT ordered_article_id, name, status 
@@ -73,9 +74,9 @@ class Kunde extends Page
         }
 
         echo <<<EOT
-            <section className="pizza_Order" class="myDiv">
-                <h3>$article_name</h3>
-                <h4>Ordered Article ID: $orderedArticleID</h4>
+            <section class="pizzaInfos">
+                <h2>$article_name</h2>
+                <h2>Ordered Article ID: $orderedArticleID</h2>
                 <input type="hidden" name="pizza_id" value="$orderedArticleID">
                 <p>$checkstatusarray[$status]</p>
             </section>
@@ -85,14 +86,11 @@ class Kunde extends Page
     protected function generateView():void
     {
         $data = $this->getViewData();
-        $sec = "10";
-        $page = $_SERVER['PHP_SELF'];
-        header("Refresh: $sec; url = $page");
         $this->generatePageHeader('Kunde');
         echo <<< EOT
             <script src="StatusUpdate.js"></script>
             <h1>Lieferstatus</h1>
-             <nav class="horizontal_nav">
+            <nav class="horizontal_nav">
             <ul>
                 <li class="horizontal-li"> <a href="Uebersicht.php">Übersicht</a></li>
                 <li class="horizontal-li" ><a href="Bestellung.php">Bestellung</a></li>
@@ -101,38 +99,47 @@ class Kunde extends Page
                 <li class="horizontal-li"><a href="Fahrer.php">Fahrer</a></li>
             </ul>
         </nav>
-            <div id="pizza-container">
         EOT;
 
         $index = 0;
-        if (!$_SESSION) {
+        if (!$this->isSession) {
             echo <<<EOT
-            <p class = "warning"> KEINE LETZTE BESTELLUNG </p>
+            <div class="warning">
+                <h2>Keine Session vorhanden</h2>
+            </div>
             EOT;
-
         }
-
+        elseif (sizeof($data) == 0){
+            echo <<<EOT
+            <div class="warning">
+                <h2>Keine Bestellung</h2>
+            </div>
+            EOT;
+        }
         else {
+            echo <<<EOT
+            <div id="pizza-container">
+EOT;
+
             foreach ($data as $bestellung)
             {
                 $orderedArticleID = htmlspecialchars($bestellung["orderedArticleID"]);
                 $name = htmlspecialchars($bestellung["name"]);
                 $status = htmlspecialchars($bestellung["status"]);
-
                 $this->fillStatusInfo($orderedArticleID, $name, $status, $index);
                 $index++;
             }
-
-            echo <<< EOT
+            echo <<<EOT
             </div>
-        </body>
-        EOT;
+
+EOT;
         }
         $this->generatePageFooter();
     }
     protected function processReceivedData():void
     {
         parent::processReceivedData();
+        session_start();
     }
     public static function main():void
     {

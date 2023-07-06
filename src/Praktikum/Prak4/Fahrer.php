@@ -150,7 +150,7 @@ class Fahrer extends Page
         $this->generatePageHeader('Fahrer');
 
         echo <<< EOT
-            <h2>Auslieferbare Bestellungen</h2>      
+            <h1>Auslieferbare Bestellungen</h1>      
             <nav class="horizontal_nav">
             <ul>
                 <li class="horizontal-li"> <a href="Uebersicht.php">Übersicht</a></li>

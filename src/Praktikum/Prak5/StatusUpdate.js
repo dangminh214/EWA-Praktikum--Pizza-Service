@@ -24,11 +24,11 @@ function createNewOrder(article){
     var customOrder = document.createElement('section');
     customOrder.classList.add('custom-order');
 
-    var customOrderPizzaName = document.createElement('h3');
+    var customOrderPizzaName = document.createElement('h2');
     customOrderPizzaName.textContent = article["name"];
     customOrderPizzaName.className = "pizza_name";
 
-    var pizza_id = document.createElement("h4");
+    var pizza_id = document.createElement("h2");
     pizza_id.classname= "pizza_id";
     pizza_id.setAttribute('value', article["orderedArticleID"]);
     pizza_id.textContent = "Ordered Article ID: " + article["orderedArticleID"];
@@ -39,8 +39,6 @@ function createNewOrder(article){
     customOrder.appendChild(statusLine);
     customOrder.appendChild(customOrderPizzaName);
     customOrder.appendChild(pizza_id);
-
-
     return customOrder;
 }
 
@@ -53,7 +51,7 @@ function updateStatus(pizzaOrder, status){
 
 function checkExistingOrder(orderID){
     "use strict";
-    var allPizzas = document.getElementById("pizza-container").querySelectorAll("section");
+    var allPizzas = document.querySelectorAll("section");
     for(var i = 0; i < allPizzas.length; i++){
         var order = allPizzas[i];
         if (order.querySelector("input[name=pizza_id]") === null){
